@@ -1,0 +1,1530 @@
+{
+  "metadata": {
+    "generated_by": "BookNLP",
+    "generated_at": "2025-07-15 19:51:05",
+    "generated_by_user": "DrewThomasson",
+    "document_id": "pride",
+    "total_sentences": 41,
+    "total_characters": 13
+  },
+  "characters": [
+    {
+      "character_id": "narrator",
+      "canonical_name": "narrator",
+      "inferred_gender": null,
+      "mention_count": 0,
+      "mentions": {
+        "proper": [],
+        "common": [],
+        "pronoun": []
+      },
+      "roles": {
+        "agent_actions": [],
+        "patient_actions": [],
+        "possessions": [],
+        "modifiers": []
+      }
+    },
+    {
+      "character_id": 13,
+      "canonical_name": "mr. bennet",
+      "inferred_gender": {
+        "inference": {
+          "he/him/his": 0.875,
+          "she/her": 0.125,
+          "they/them/their": 0,
+          "xe/xem/xyr/xir": 0,
+          "ze/zem/zir/hir": 0
+        },
+        "argmax": "he/him/his",
+        "max": 0.875,
+        "total": 8
+      },
+      "mention_count": 69,
+      "mentions": {
+        "proper": [
+          {
+            "c": 5,
+            "n": "Mr. Bennet"
+          }
+        ],
+        "common": [
+          {
+            "c": 3,
+            "n": "My dear"
+          },
+          {
+            "c": 3,
+            "n": "my dear"
+          },
+          {
+            "c": 1,
+            "n": "a single man in possession of a good fortune"
+          },
+          {
+            "c": 1,
+            "n": "a wife"
+          },
+          {
+            "c": 1,
+            "n": "such a man"
+          },
+          {
+            "c": 1,
+            "n": "his lady"
+          },
+          {
+            "c": 1,
+            "n": "his wife"
+          }
+        ],
+        "pronoun": [
+          {
+            "c": 21,
+            "n": "you"
+          },
+          {
+            "c": 7,
+            "n": "You"
+          },
+          {
+            "c": 7,
+            "n": "I"
+          },
+          {
+            "c": 4,
+            "n": "his"
+          },
+          {
+            "c": 4,
+            "n": "my"
+          },
+          {
+            "c": 3,
+            "n": "your"
+          },
+          {
+            "c": 2,
+            "n": "he"
+          },
+          {
+            "c": 2,
+            "n": "me"
+          },
+          {
+            "c": 1,
+            "n": "My"
+          },
+          {
+            "c": 1,
+            "n": "him"
+          },
+          {
+            "c": 1,
+            "n": "she"
+          }
+        ]
+      },
+      "roles": {
+        "agent_actions": [
+          {
+            "action": "said",
+            "token_position": 83
+          },
+          {
+            "action": "heard",
+            "token_position": 94
+          },
+          {
+            "action": "replied",
+            "token_position": 106
+          },
+          {
+            "action": "had",
+            "token_position": 109
+          },
+          {
+            "action": "returned",
+            "token_position": 118
+          },
+          {
+            "action": "made",
+            "token_position": 141
+          },
+          {
+            "action": "want",
+            "token_position": 149
+          },
+          {
+            "action": "want",
+            "token_position": 167
+          },
+          {
+            "action": "have",
+            "token_position": 174
+          },
+          {
+            "action": "have",
+            "token_position": 174
+          },
+          {
+            "action": "know",
+            "token_position": 195
+          },
+          {
+            "action": "know",
+            "token_position": 363
+          },
+          {
+            "action": "talk",
+            "token_position": 394
+          },
+          {
+            "action": "visit",
+            "token_position": 419
+          },
+          {
+            "action": "see",
+            "token_position": 430
+          },
+          {
+            "action": "go",
+            "token_position": 441
+          },
+          {
+            "action": "send",
+            "token_position": 446
+          },
+          {
+            "action": "send",
+            "token_position": 446
+          },
+          {
+            "action": "flatter",
+            "token_position": 486
+          },
+          {
+            "action": "go",
+            "token_position": 559
+          },
+          {
+            "action": "see",
+            "token_position": 561
+          },
+          {
+            "action": "engage",
+            "token_position": 578
+          },
+          {
+            "action": "assure",
+            "token_position": 582
+          },
+          {
+            "action": "know",
+            "token_position": 625
+          },
+          {
+            "action": "go",
+            "token_position": 635
+          },
+          {
+            "action": "do",
+            "token_position": 651
+          },
+          {
+            "action": "dare",
+            "token_position": 665
+          },
+          {
+            "action": "send",
+            "token_position": 680
+          },
+          {
+            "action": "send",
+            "token_position": 680
+          },
+          {
+            "action": "throw",
+            "token_position": 706
+          },
+          {
+            "action": "do",
+            "token_position": 722
+          },
+          {
+            "action": "giving",
+            "token_position": 763
+          },
+          {
+            "action": "abuse",
+            "token_position": 816
+          },
+          {
+            "action": "take",
+            "token_position": 826
+          },
+          {
+            "action": "have",
+            "token_position": 833
+          },
+          {
+            "action": "mistake",
+            "token_position": 844
+          },
+          {
+            "action": "mention",
+            "token_position": 869
+          }
+        ],
+        "patient_actions": [
+          {
+            "action": "considered",
+            "token_position": 63
+          },
+          {
+            "action": "told",
+            "token_position": 132
+          },
+          {
+            "action": "cried",
+            "token_position": 158
+          },
+          {
+            "action": "tell",
+            "token_position": 169
+          },
+          {
+            "action": "like",
+            "token_position": 472
+          },
+          {
+            "action": "assure",
+            "token_position": 582
+          },
+          {
+            "action": "see",
+            "token_position": 674
+          }
+        ],
+        "possessions": [
+          {
+            "item": "entering",
+            "token_position": 42
+          },
+          {
+            "item": "Bennet",
+            "token_position": 80
+          },
+          {
+            "item": "Bennet",
+            "token_position": 80
+          },
+          {
+            "item": "lady",
+            "token_position": 85
+          },
+          {
+            "item": "wife",
+            "token_position": 160
+          },
+          {
+            "item": "dear",
+            "token_position": 191
+          },
+          {
+            "item": "dear",
+            "token_position": 302
+          },
+          {
+            "item": "Bennet",
+            "token_position": 346
+          },
+          {
+            "item": "wife",
+            "token_position": 351
+          },
+          {
+            "item": "daughters",
+            "token_position": 590
+          },
+          {
+            "item": "consent",
+            "token_position": 692
+          },
+          {
+            "item": "Lizzy",
+            "token_position": 714
+          },
+          {
+            "item": "children",
+            "token_position": 819
+          },
+          {
+            "item": "nerves",
+            "token_position": 857
+          }
+        ],
+        "modifiers": [
+          {
+            "description": "tiresome",
+            "token_position": 359
+          },
+          {
+            "description": "handsome",
+            "token_position": 463
+          },
+          {
+            "description": "scrupulous",
+            "token_position": 660
+          }
+        ]
+      }
+    },
+    {
+      "character_id": 14,
+      "canonical_name": "my dear",
+      "inferred_gender": null,
+      "mention_count": 14,
+      "mentions": {
+        "proper": [],
+        "common": [
+          {
+            "c": 1,
+            "n": "my dear"
+          },
+          {
+            "c": 1,
+            "n": "his wife"
+          }
+        ],
+        "pronoun": [
+          {
+            "c": 5,
+            "n": "I"
+          },
+          {
+            "c": 3,
+            "n": "my"
+          },
+          {
+            "c": 2,
+            "n": "My"
+          },
+          {
+            "c": 2,
+            "n": "me"
+          }
+        ]
+      },
+      "roles": {
+        "agent_actions": [
+          {
+            "action": "replied",
+            "token_position": 349
+          },
+          {
+            "action": "thinking",
+            "token_position": 367
+          },
+          {
+            "action": "have",
+            "token_position": 492
+          },
+          {
+            "action": "pretend",
+            "token_position": 504
+          },
+          {
+            "action": "pretend",
+            "token_position": 504
+          },
+          {
+            "action": "desire",
+            "token_position": 719
+          }
+        ],
+        "patient_actions": [
+          {
+            "action": "flatter",
+            "token_position": 486
+          },
+          {
+            "action": "vexing",
+            "token_position": 829
+          }
+        ],
+        "possessions": [
+          {
+            "item": "Bennet",
+            "token_position": 346
+          },
+          {
+            "item": "dear",
+            "token_position": 483
+          },
+          {
+            "item": "share",
+            "token_position": 496
+          },
+          {
+            "item": "dear",
+            "token_position": 554
+          },
+          {
+            "item": "nerves",
+            "token_position": 839
+          }
+        ],
+        "modifiers": [
+          {
+            "description": "sure",
+            "token_position": 740
+          }
+        ]
+      }
+    },
+    {
+      "character_id": 22,
+      "canonical_name": "a young man of large fortune",
+      "inferred_gender": {
+        "inference": {
+          "he/him/his": 1.0,
+          "she/her": 0,
+          "they/them/their": 0,
+          "xe/xem/xyr/xir": 0,
+          "ze/zem/zir/hir": 0
+        },
+        "argmax": "he/him/his",
+        "max": 1.0,
+        "total": 11
+      },
+      "mention_count": 13,
+      "mentions": {
+        "proper": [],
+        "common": [
+          {
+            "c": 1,
+            "n": "a young man of large fortune"
+          },
+          {
+            "c": 1,
+            "n": "A single man of large fortune"
+          }
+        ],
+        "pronoun": [
+          {
+            "c": 6,
+            "n": "he"
+          },
+          {
+            "c": 4,
+            "n": "his"
+          },
+          {
+            "c": 1,
+            "n": "him"
+          }
+        ]
+      },
+      "roles": {
+        "agent_actions": [
+          {
+            "action": "taken",
+            "token_position": 203
+          },
+          {
+            "action": "came",
+            "token_position": 219
+          },
+          {
+            "action": "agreed",
+            "token_position": 243
+          },
+          {
+            "action": "agreed",
+            "token_position": 243
+          },
+          {
+            "action": "marrying",
+            "token_position": 370
+          },
+          {
+            "action": "fall",
+            "token_position": 407
+          },
+          {
+            "action": "comes",
+            "token_position": 425
+          }
+        ],
+        "patient_actions": [
+          {
+            "action": "visit",
+            "token_position": 419
+          }
+        ],
+        "possessions": [
+          {
+            "item": "servants",
+            "token_position": 262
+          },
+          {
+            "item": "name",
+            "token_position": 281
+          },
+          {
+            "item": "design",
+            "token_position": 380
+          }
+        ],
+        "modifiers": [
+          {
+            "description": "married",
+            "token_position": 291
+          },
+          {
+            "description": "single",
+            "token_position": 293
+          }
+        ]
+      }
+    },
+    {
+      "character_id": 7,
+      "canonical_name": "mr. bingley",
+      "inferred_gender": {
+        "inference": {
+          "he/him/his": 0.811,
+          "she/her": 0.113,
+          "they/them/their": 0.077,
+          "xe/xem/xyr/xir": 0.0,
+          "ze/zem/zir/hir": 0.0
+        },
+        "argmax": "he/him/his",
+        "max": 0.811,
+        "total": 300001.981
+      },
+      "mention_count": 9,
+      "mentions": {
+        "proper": [
+          {
+            "c": 3,
+            "n": "Mr. Bingley"
+          },
+          {
+            "c": 1,
+            "n": "Bingley"
+          }
+        ],
+        "common": [],
+        "pronoun": [
+          {
+            "c": 2,
+            "n": "he"
+          },
+          {
+            "c": 2,
+            "n": "him"
+          },
+          {
+            "c": 1,
+            "n": "his"
+          }
+        ]
+      },
+      "roles": {
+        "agent_actions": [
+          {
+            "action": "like",
+            "token_position": 472
+          },
+          {
+            "action": "comes",
+            "token_position": 566
+          },
+          {
+            "action": "chooses",
+            "token_position": 698
+          }
+        ],
+        "patient_actions": [
+          {
+            "action": "see",
+            "token_position": 561
+          },
+          {
+            "action": "visit",
+            "token_position": 647
+          },
+          {
+            "action": "assure",
+            "token_position": 687
+          }
+        ],
+        "possessions": [
+          {
+            "item": "marrying",
+            "token_position": 695
+          }
+        ],
+        "modifiers": [
+          {
+            "description": "glad",
+            "token_position": 672
+          }
+        ]
+      }
+    },
+    {
+      "character_id": 29,
+      "canonical_name": "the girls",
+      "inferred_gender": {
+        "inference": {
+          "he/him/his": 0,
+          "she/her": 0,
+          "they/them/their": 1.0,
+          "xe/xem/xyr/xir": 0,
+          "ze/zem/zir/hir": 0
+        },
+        "argmax": "they/them/their",
+        "max": 1.0,
+        "total": 5
+      },
+      "mention_count": 9,
+      "mentions": {
+        "proper": [],
+        "common": [
+          {
+            "c": 2,
+            "n": "the girls"
+          },
+          {
+            "c": 1,
+            "n": "your own children"
+          },
+          {
+            "c": 1,
+            "n": "my old friends"
+          }
+        ],
+        "pronoun": [
+          {
+            "c": 2,
+            "n": "They"
+          },
+          {
+            "c": 2,
+            "n": "them"
+          },
+          {
+            "c": 1,
+            "n": "they"
+          }
+        ]
+      },
+      "roles": {
+        "agent_actions": [
+          {
+            "action": "go",
+            "token_position": 441
+          },
+          {
+            "action": "send",
+            "token_position": 446
+          },
+          {
+            "action": "have",
+            "token_position": 773
+          }
+        ],
+        "patient_actions": [
+          {
+            "action": "recommend",
+            "token_position": 779
+          },
+          {
+            "action": "abuse",
+            "token_position": 816
+          }
+        ],
+        "possessions": [],
+        "modifiers": [
+          {
+            "description": "silly",
+            "token_position": 790
+          },
+          {
+            "description": "ignorant",
+            "token_position": 792
+          },
+          {
+            "description": "friends",
+            "token_position": 863
+          }
+        ]
+      }
+    },
+    {
+      "character_id": 27,
+      "canonical_name": "our girls",
+      "inferred_gender": {
+        "inference": {
+          "he/him/his": 0,
+          "she/her": 0,
+          "they/them/their": 1.0,
+          "xe/xem/xyr/xir": 0,
+          "ze/zem/zir/hir": 0
+        },
+        "argmax": "they/them/their",
+        "max": 1.0,
+        "total": 5
+      },
+      "mention_count": 7,
+      "mentions": {
+        "proper": [],
+        "common": [
+          {
+            "c": 1,
+            "n": "our girls"
+          }
+        ],
+        "pronoun": [
+          {
+            "c": 5,
+            "n": "them"
+          },
+          {
+            "c": 1,
+            "n": "themselves"
+          }
+        ]
+      },
+      "roles": {
+        "agent_actions": [],
+        "patient_actions": [
+          {
+            "action": "affect",
+            "token_position": 338
+          },
+          {
+            "action": "send",
+            "token_position": 446
+          }
+        ],
+        "possessions": [],
+        "modifiers": []
+      }
+    },
+    {
+      "character_id": 21,
+      "canonical_name": "my",
+      "inferred_gender": {
+        "inference": {
+          "he/him/his": 1.0,
+          "she/her": 0,
+          "they/them/their": 0,
+          "xe/xem/xyr/xir": 0,
+          "ze/zem/zir/hir": 0
+        },
+        "argmax": "he/him/his",
+        "max": 1.0,
+        "total": 1
+      },
+      "mention_count": 6,
+      "mentions": {
+        "proper": [],
+        "common": [],
+        "pronoun": [
+          {
+            "c": 2,
+            "n": "my"
+          },
+          {
+            "c": 2,
+            "n": "I"
+          },
+          {
+            "c": 1,
+            "n": "he"
+          },
+          {
+            "c": 1,
+            "n": "me"
+          }
+        ]
+      },
+      "roles": {
+        "agent_actions": [
+          {
+            "action": "replied",
+            "token_position": 783
+          },
+          {
+            "action": "have",
+            "token_position": 851
+          },
+          {
+            "action": "heard",
+            "token_position": 867
+          }
+        ],
+        "patient_actions": [
+          {
+            "action": "mistake",
+            "token_position": 844
+          }
+        ],
+        "possessions": [
+          {
+            "item": "dear",
+            "token_position": 848
+          },
+          {
+            "item": "friends",
+            "token_position": 863
+          }
+        ],
+        "modifiers": []
+      }
+    },
+    {
+      "character_id": 10,
+      "canonical_name": "lizzy",
+      "inferred_gender": {
+        "inference": {
+          "he/him/his": 0.061,
+          "she/her": 0.757,
+          "they/them/their": 0.061,
+          "xe/xem/xyr/xir": 0.061,
+          "ze/zem/zir/hir": 0.061
+        },
+        "argmax": "she/her",
+        "max": 0.757,
+        "total": 1.644
+      },
+      "mention_count": 5,
+      "mentions": {
+        "proper": [
+          {
+            "c": 2,
+            "n": "Lizzy"
+          }
+        ],
+        "common": [],
+        "pronoun": [
+          {
+            "c": 2,
+            "n": "her"
+          },
+          {
+            "c": 1,
+            "n": "she"
+          }
+        ]
+      },
+      "roles": {
+        "agent_actions": [
+          {
+            "action": "has",
+            "token_position": 799
+          }
+        ],
+        "patient_actions": [
+          {
+            "action": "giving",
+            "token_position": 763
+          }
+        ],
+        "possessions": [
+          {
+            "item": "sisters",
+            "token_position": 806
+          }
+        ],
+        "modifiers": [
+          {
+            "description": "better",
+            "token_position": 732
+          },
+          {
+            "description": "handsome",
+            "token_position": 746
+          }
+        ]
+      }
+    },
+    {
+      "character_id": 31,
+      "canonical_name": "a woman",
+      "inferred_gender": {
+        "inference": {
+          "he/him/his": 0,
+          "she/her": 1.0,
+          "they/them/their": 0,
+          "xe/xem/xyr/xir": 0,
+          "ze/zem/zir/hir": 0
+        },
+        "argmax": "she/her",
+        "max": 1.0,
+        "total": 2
+      },
+      "mention_count": 4,
+      "mentions": {
+        "proper": [],
+        "common": [
+          {
+            "c": 2,
+            "n": "a woman"
+          }
+        ],
+        "pronoun": [
+          {
+            "c": 1,
+            "n": "she"
+          },
+          {
+            "c": 1,
+            "n": "her"
+          }
+        ]
+      },
+      "roles": {
+        "agent_actions": [
+          {
+            "action": "has",
+            "token_position": 514
+          }
+        ],
+        "patient_actions": [],
+        "possessions": [
+          {
+            "item": "beauty",
+            "token_position": 530
+          }
+        ],
+        "modifiers": []
+      }
+    },
+    {
+      "character_id": 32,
+      "canonical_name": "five grown - up daughters",
+      "inferred_gender": {
+        "inference": {
+          "he/him/his": 0,
+          "she/her": 0,
+          "they/them/their": 1.0,
+          "xe/xem/xyr/xir": 0,
+          "ze/zem/zir/hir": 0
+        },
+        "argmax": "they/them/their",
+        "max": 1.0,
+        "total": 2
+      },
+      "mention_count": 4,
+      "mentions": {
+        "proper": [],
+        "common": [
+          {
+            "c": 1,
+            "n": "five grown - up daughters"
+          },
+          {
+            "c": 1,
+            "n": "your daughters"
+          }
+        ],
+        "pronoun": [
+          {
+            "c": 1,
+            "n": "them"
+          },
+          {
+            "c": 1,
+            "n": "they"
+          }
+        ]
+      },
+      "roles": {
+        "agent_actions": [
+          {
+            "action": "visit",
+            "token_position": 628
+          }
+        ],
+        "patient_actions": [
+          {
+            "action": "has",
+            "token_position": 514
+          },
+          {
+            "action": "consider",
+            "token_position": 588
+          }
+        ],
+        "possessions": [],
+        "modifiers": []
+      }
+    },
+    {
+      "character_id": 4,
+      "canonical_name": "mrs. long",
+      "inferred_gender": {
+        "inference": {
+          "he/him/his": 0.103,
+          "she/her": 0.831,
+          "they/them/their": 0.066,
+          "xe/xem/xyr/xir": 0.0,
+          "ze/zem/zir/hir": 0.0
+        },
+        "argmax": "she/her",
+        "max": 0.831,
+        "total": 200001.35
+      },
+      "mention_count": 3,
+      "mentions": {
+        "proper": [
+          {
+            "c": 2,
+            "n": "Mrs. Long"
+          }
+        ],
+        "common": [],
+        "pronoun": [
+          {
+            "c": 1,
+            "n": "she"
+          }
+        ]
+      },
+      "roles": {
+        "agent_actions": [
+          {
+            "action": "told",
+            "token_position": 132
+          },
+          {
+            "action": "says",
+            "token_position": 199
+          }
+        ],
+        "patient_actions": [],
+        "possessions": [],
+        "modifiers": []
+      }
+    },
+    {
+      "character_id": 16,
+      "canonical_name": "the surrounding families",
+      "inferred_gender": {
+        "inference": {
+          "he/him/his": 0,
+          "she/her": 0,
+          "they/them/their": 1.0,
+          "xe/xem/xyr/xir": 0,
+          "ze/zem/zir/hir": 0
+        },
+        "argmax": "they/them/their",
+        "max": 1.0,
+        "total": 1
+      },
+      "mention_count": 2,
+      "mentions": {
+        "proper": [],
+        "common": [
+          {
+            "c": 1,
+            "n": "the surrounding families"
+          }
+        ],
+        "pronoun": [
+          {
+            "c": 1,
+            "n": "their"
+          }
+        ]
+      },
+      "roles": {
+        "agent_actions": [],
+        "patient_actions": [],
+        "possessions": [
+          {
+            "item": "daughters",
+            "token_position": 74
+          }
+        ],
+        "modifiers": []
+      }
+    }
+  ],
+  "sentences": [
+    {
+      "sentence_id": 0,
+      "text": "It is a truth universally acknowledged , that a single man in possession of a good fortune , must be in want of a wife .",
+      "speaker": "narrator",
+      "speaker_id": "narrator",
+      "token_count": 26,
+      "start_token": 0,
+      "end_token": 25
+    },
+    {
+      "sentence_id": 1,
+      "text": "However little known the feelings or views of such a man may be on his first entering a neighbourhood , this truth is so well fixed in the minds of the surrounding families , that he is considered the rightful property of some one or other of their daughters .",
+      "speaker": "narrator",
+      "speaker_id": "narrator",
+      "token_count": 50,
+      "start_token": 26,
+      "end_token": 75
+    },
+    {
+      "sentence_id": 2,
+      "text": "“ My dear Mr. Bennet , ” said his lady to him one day , “ have you heard that Netherfield Park is let at last ? ” Mr. Bennet replied that he had not .",
+      "speaker": "mr. bennet",
+      "speaker_id": 13,
+      "token_count": 36,
+      "start_token": 76,
+      "end_token": 111
+    },
+    {
+      "sentence_id": 3,
+      "text": "“ But it is , ” returned she ; “ for Mrs. Long has just been here , and she told me all about it . ”",
+      "speaker": "mr. bennet",
+      "speaker_id": 13,
+      "token_count": 27,
+      "start_token": 112,
+      "end_token": 138
+    },
+    {
+      "sentence_id": 4,
+      "text": "Mr. Bennet made no answer .",
+      "speaker": "narrator",
+      "speaker_id": "narrator",
+      "token_count": 6,
+      "start_token": 139,
+      "end_token": 144
+    },
+    {
+      "sentence_id": 5,
+      "text": "“ Do you not want to know who has taken it ? ” cried his wife impatiently .",
+      "speaker": "mr. bennet",
+      "speaker_id": 13,
+      "token_count": 18,
+      "start_token": 145,
+      "end_token": 162
+    },
+    {
+      "sentence_id": 6,
+      "text": "“ _ You _ want to tell me , and I have no objection to hearing it . ”",
+      "speaker": "mr. bennet",
+      "speaker_id": 13,
+      "token_count": 19,
+      "start_token": 163,
+      "end_token": 181
+    },
+    {
+      "sentence_id": 7,
+      "text": "This was invitation enough .",
+      "speaker": "narrator",
+      "speaker_id": "narrator",
+      "token_count": 5,
+      "start_token": 182,
+      "end_token": 186
+    },
+    {
+      "sentence_id": 8,
+      "text": "“ Why , my dear , you must know , Mrs. Long says that Netherfield is taken by a young man of large fortune from the north of England ; that he came down on Monday in a chaise and four to see the place , and was so much delighted with it , that he agreed with Mr. Morris immediately ; that he is to take possession before Michaelmas , and some of his servants are to be in the house by the end of next week . ”",
+      "speaker": "mr. bennet",
+      "speaker_id": 13,
+      "token_count": 90,
+      "start_token": 187,
+      "end_token": 276
+    },
+    {
+      "sentence_id": 9,
+      "text": "“ What is his name ? ” “ Bingley . ”",
+      "speaker": "mr. bennet",
+      "speaker_id": 13,
+      "token_count": 11,
+      "start_token": 277,
+      "end_token": 287
+    },
+    {
+      "sentence_id": 10,
+      "text": "“ Is he married or single ? ” “ Oh !",
+      "speaker": "mr. bennet",
+      "speaker_id": 13,
+      "token_count": 11,
+      "start_token": 288,
+      "end_token": 298
+    },
+    {
+      "sentence_id": 11,
+      "text": "Single , my dear , to be sure !",
+      "speaker": "mr. bennet",
+      "speaker_id": 13,
+      "token_count": 9,
+      "start_token": 299,
+      "end_token": 307
+    },
+    {
+      "sentence_id": 12,
+      "text": "A single man of large fortune ; four or five thousand a year .",
+      "speaker": "mr. bennet",
+      "speaker_id": 13,
+      "token_count": 14,
+      "start_token": 308,
+      "end_token": 321
+    },
+    {
+      "sentence_id": 13,
+      "text": "What a fine thing for our girls ! ” “ How so ?",
+      "speaker": "mr. bennet",
+      "speaker_id": 13,
+      "token_count": 13,
+      "start_token": 322,
+      "end_token": 334
+    },
+    {
+      "sentence_id": 14,
+      "text": "How can it affect them ? ” “ My dear Mr. Bennet , ” replied his wife , “ how can you be so tiresome !",
+      "speaker": "narrator",
+      "speaker_id": "narrator",
+      "token_count": 26,
+      "start_token": 335,
+      "end_token": 360
+    },
+    {
+      "sentence_id": 15,
+      "text": "You must know that I am thinking of his marrying one of them . ” “ Is that his design in settling here ? ” “ Design !",
+      "speaker": "narrator",
+      "speaker_id": "narrator",
+      "token_count": 28,
+      "start_token": 361,
+      "end_token": 388
+    },
+    {
+      "sentence_id": 16,
+      "text": "Nonsense , how can you talk so !",
+      "speaker": "my dear",
+      "speaker_id": 14,
+      "token_count": 8,
+      "start_token": 389,
+      "end_token": 396
+    },
+    {
+      "sentence_id": 17,
+      "text": "But it is very likely that he _ may _ fall in love with one of them , and therefore you must visit him as soon as he comes . ”",
+      "speaker": "my dear",
+      "speaker_id": 14,
+      "token_count": 31,
+      "start_token": 397,
+      "end_token": 427
+    },
+    {
+      "sentence_id": 18,
+      "text": "“ I see no occasion for that .",
+      "speaker": "mr. bennet",
+      "speaker_id": 13,
+      "token_count": 8,
+      "start_token": 428,
+      "end_token": 435
+    },
+    {
+      "sentence_id": 19,
+      "text": "You and the girls may go , or you may send them by themselves , which perhaps will be still better , for as you are as handsome as any of them , Mr. Bingley may like you the best of the party . ”",
+      "speaker": "mr. bennet",
+      "speaker_id": 13,
+      "token_count": 45,
+      "start_token": 436,
+      "end_token": 480
+    },
+    {
+      "sentence_id": 20,
+      "text": "“ My dear , you flatter me .",
+      "speaker": "my dear",
+      "speaker_id": 14,
+      "token_count": 8,
+      "start_token": 481,
+      "end_token": 488
+    },
+    {
+      "sentence_id": 21,
+      "text": "I certainly _ have _ had my share of beauty , but I do not pretend to be anything extraordinary now .",
+      "speaker": "my dear",
+      "speaker_id": 14,
+      "token_count": 22,
+      "start_token": 489,
+      "end_token": 510
+    },
+    {
+      "sentence_id": 22,
+      "text": "When a woman has five grown - up daughters , she ought to give over thinking of her own beauty . ”",
+      "speaker": "my dear",
+      "speaker_id": 14,
+      "token_count": 22,
+      "start_token": 511,
+      "end_token": 532
+    },
+    {
+      "sentence_id": 23,
+      "text": "“ In such cases , a woman has not often much beauty to think of . ”",
+      "speaker": "mr. bennet",
+      "speaker_id": 13,
+      "token_count": 17,
+      "start_token": 533,
+      "end_token": 549
+    },
+    {
+      "sentence_id": 24,
+      "text": "“ But , my dear , you must indeed go and see Mr. Bingley when he comes into the neighbourhood . ”",
+      "speaker": "my dear",
+      "speaker_id": 14,
+      "token_count": 22,
+      "start_token": 550,
+      "end_token": 571
+    },
+    {
+      "sentence_id": 25,
+      "text": "“ It is more than I engage for , I assure you . ”",
+      "speaker": "mr. bennet",
+      "speaker_id": 13,
+      "token_count": 14,
+      "start_token": 572,
+      "end_token": 585
+    },
+    {
+      "sentence_id": 26,
+      "text": "“ But consider your daughters .",
+      "speaker": "my dear",
+      "speaker_id": 14,
+      "token_count": 6,
+      "start_token": 586,
+      "end_token": 591
+    },
+    {
+      "sentence_id": 27,
+      "text": "Only think what an establishment it would be for one of them .",
+      "speaker": "my dear",
+      "speaker_id": 14,
+      "token_count": 13,
+      "start_token": 592,
+      "end_token": 604
+    },
+    {
+      "sentence_id": 28,
+      "text": "Sir William and Lady Lucas are determined to go , merely on that account , for in general , you know , they visit no newcomers .",
+      "speaker": "my dear",
+      "speaker_id": 14,
+      "token_count": 27,
+      "start_token": 605,
+      "end_token": 631
+    },
+    {
+      "sentence_id": 29,
+      "text": "Indeed you must go , for it will be impossible for _ us _ to visit him if you do not . ”",
+      "speaker": "my dear",
+      "speaker_id": 14,
+      "token_count": 23,
+      "start_token": 632,
+      "end_token": 654
+    },
+    {
+      "sentence_id": 30,
+      "text": "“ You are over - scrupulous , surely .",
+      "speaker": "mr. bennet",
+      "speaker_id": 13,
+      "token_count": 9,
+      "start_token": 655,
+      "end_token": 663
+    },
+    {
+      "sentence_id": 31,
+      "text": "I dare say Mr. Bingley will be very glad to see you ; and I will send a few lines by you to assure him of my hearty consent to his marrying whichever he chooses of the girls ; though I must throw in a good word for my little Lizzy . ” “ I desire you will do no such thing .",
+      "speaker": "narrator",
+      "speaker_id": "narrator",
+      "token_count": 63,
+      "start_token": 664,
+      "end_token": 726
+    },
+    {
+      "sentence_id": 32,
+      "text": "Lizzy is not a bit better than the others ; and I am sure she is not half so handsome as Jane , nor half so good - humoured as Lydia .",
+      "speaker": "my dear",
+      "speaker_id": 14,
+      "token_count": 32,
+      "start_token": 727,
+      "end_token": 758
+    },
+    {
+      "sentence_id": 33,
+      "text": "But you are always giving _ her _ the preference . ”",
+      "speaker": "my dear",
+      "speaker_id": 14,
+      "token_count": 12,
+      "start_token": 759,
+      "end_token": 770
+    },
+    {
+      "sentence_id": 34,
+      "text": "“ They have none of them much to recommend them , ” replied he ; “ they are all silly and ignorant like other girls ; but Lizzy has something more of quickness than her sisters . ” “ Mr. Bennet , how can you abuse your own children in such a way ?",
+      "speaker": "narrator",
+      "speaker_id": "narrator",
+      "token_count": 54,
+      "start_token": 771,
+      "end_token": 824
+    },
+    {
+      "sentence_id": 35,
+      "text": "You take delight in vexing me .",
+      "speaker": "my dear",
+      "speaker_id": 14,
+      "token_count": 7,
+      "start_token": 825,
+      "end_token": 831
+    },
+    {
+      "sentence_id": 36,
+      "text": "You have no compassion for my poor nerves . ”",
+      "speaker": "my dear",
+      "speaker_id": 14,
+      "token_count": 10,
+      "start_token": 832,
+      "end_token": 841
+    },
+    {
+      "sentence_id": 37,
+      "text": "“ You mistake me , my dear .",
+      "speaker": "my",
+      "speaker_id": 21,
+      "token_count": 8,
+      "start_token": 842,
+      "end_token": 849
+    },
+    {
+      "sentence_id": 38,
+      "text": "I have a high respect for your nerves .",
+      "speaker": "my",
+      "speaker_id": 21,
+      "token_count": 9,
+      "start_token": 850,
+      "end_token": 858
+    },
+    {
+      "sentence_id": 39,
+      "text": "They are my old friends .",
+      "speaker": "my",
+      "speaker_id": 21,
+      "token_count": 6,
+      "start_token": 859,
+      "end_token": 864
+    },
+    {
+      "sentence_id": 40,
+      "text": "I have heard you mention them with consideration these last twenty years at least . ”",
+      "speaker": "my",
+      "speaker_id": 21,
+      "token_count": 16,
+      "start_token": 865,
+      "end_token": 880
+    }
+  ]
+}

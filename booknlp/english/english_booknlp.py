@@ -18,6 +18,7 @@ from pathlib import Path
 import urllib.request 
 import pkg_resources
 import torch
+import datetime
 
 class EnglishBookNLP:
 
@@ -326,8 +327,159 @@ class EnglishBookNLP:
 				data["characters"].append(chardata)
 			
 		return data
-			
 
+	def generate_sentence_speaker_json(self, tokens, quotes, attributed_quotations, entities, assignments, genders, chardata, outFolder, idd):
+		"""
+		Generate a JSON file mapping each sentence to its speaker with comprehensive character information
+		"""
+		
+		# Get canonical names for characters
+		names = {}
+		for idx, (start, end, cat, text) in enumerate(entities):
+			coref = assignments[idx]
+			if coref not in names:
+				names[coref] = Counter()
+			ner_prop = cat.split("_")[0]
+			ner_type = cat.split("_")[1]
+			if ner_prop == "PROP":
+				names[coref][text.lower()] += 10
+			elif ner_prop == "NOM":
+				names[coref][text.lower()] += 1
+			else:
+				names[coref][text.lower()] += 0.001
+		
+		# Get canonical name for each character ID
+		char_names = {}
+		for coref, name_counter in names.items():
+			if name_counter:
+				char_names[coref] = name_counter.most_common(1)[0][0]
+			else:
+				char_names[coref] = f"character_{coref}"
+		
+		# Create mapping of token ranges to quotes and speakers
+		quote_ranges = {}
+		for idx, (start, end) in enumerate(quotes):
+			mention_id = attributed_quotations[idx]
+			if mention_id is not None:
+				speaker_id = assignments[mention_id]
+				speaker_name = char_names.get(speaker_id, f"character_{speaker_id}")
+			else:
+				speaker_id = "narrator"
+				speaker_name = "narrator"
+			
+			for token_idx in range(start, end + 1):
+				quote_ranges[token_idx] = {
+					"speaker_id": speaker_id,
+					"speaker_name": speaker_name
+				}
+		
+		# Group tokens by sentence
+		sentences = {}
+		for token in tokens:
+			sent_id = token.sentence_id
+			if sent_id not in sentences:
+				sentences[sent_id] = []
+			sentences[sent_id].append(token)
+		
+		# Build character information from chardata
+		characters_info = []
+		
+		# Add narrator first
+		narrator_char = {
+			"character_id": "narrator",
+			"canonical_name": "narrator",
+			"inferred_gender": None,
+			"mention_count": 0,
+			"mentions": {
+				"proper": [],
+				"common": [],
+				"pronoun": []
+			},
+			"roles": {
+				"agent_actions": [],
+				"patient_actions": [],
+				"possessions": [],
+				"modifiers": []
+			}
+		}
+		characters_info.append(narrator_char)
+		
+		# Add characters from chardata
+		for character in chardata["characters"]:
+			char_id = character["id"]
+			char_info = {
+				"character_id": char_id,
+				"canonical_name": char_names.get(char_id, f"character_{char_id}"),
+				"inferred_gender": character.get("g", None),
+				"mention_count": character["count"],
+				"mentions": {
+					"proper": character["mentions"]["proper"],
+					"common": character["mentions"]["common"], 
+					"pronoun": character["mentions"]["pronoun"]
+				},
+				"roles": {
+					"agent_actions": [{"action": action["w"], "token_position": action["i"]} for action in character["agent"]],
+					"patient_actions": [{"action": action["w"], "token_position": action["i"]} for action in character["patient"]],
+					"possessions": [{"item": poss["w"], "token_position": poss["i"]} for poss in character["poss"]],
+					"modifiers": [{"description": mod["w"], "token_position": mod["i"]} for mod in character["mod"]]
+				}
+			}
+			characters_info.append(char_info)
+		
+		# Build the JSON structure
+		result = {
+			"metadata": {
+				"generated_by": "BookNLP",
+				"generated_at": "2025-07-15 19:51:05",
+				"generated_by_user": "DrewThomasson",
+				"document_id": idd,
+				"total_sentences": len(sentences),
+				"total_characters": len(characters_info)
+			},
+			"characters": characters_info,
+			"sentences": []
+		}
+		
+		# Process sentences
+		for sent_id in sorted(sentences.keys()):
+			sent_tokens = sentences[sent_id]
+			sent_text = " ".join([token.text for token in sent_tokens])
+			
+			# Determine speaker for this sentence
+			# Check if any tokens in this sentence are part of quotes
+			speakers_in_sentence = set()
+			speaker_ids_in_sentence = set()
+			
+			for token in sent_tokens:
+				if token.token_id in quote_ranges:
+					speakers_in_sentence.add(quote_ranges[token.token_id]["speaker_name"])
+					speaker_ids_in_sentence.add(quote_ranges[token.token_id]["speaker_id"])
+			
+			# If exactly one speaker, use that speaker; otherwise default to narrator
+			if len(speakers_in_sentence) == 1:
+				speaker = list(speakers_in_sentence)[0]
+				speaker_id = list(speaker_ids_in_sentence)[0]
+			else:
+				speaker = "narrator"
+				speaker_id = "narrator"
+			
+			sentence_data = {
+				"sentence_id": sent_id,
+				"text": sent_text,
+				"speaker": speaker,
+				"speaker_id": speaker_id,
+				"token_count": len(sent_tokens),
+				"start_token": sent_tokens[0].token_id,
+				"end_token": sent_tokens[-1].token_id
+			}
+			
+			result["sentences"].append(sentence_data)
+		
+		# Write JSON file
+		with open(join(outFolder, "%s.sentences.json" % (idd)), "w", encoding="utf-8") as out:
+			json.dump(result, out, indent=2, ensure_ascii=False)
+		
+		return result
 
 	def process(self, filename, outFolder, idd):		
 
@@ -502,6 +654,13 @@ class EnglishBookNLP:
 						else:
 							names[coref][text.lower()]+=.001
 
+					# Generate the comprehensive sentence-speaker JSON
+					print("--- generating sentence JSON: start ---")
+					sentence_start_time = time.time()
+					self.generate_sentence_speaker_json(tokens, quotes, attributed_quotations, 
+														entities, assignments, genders, chardata, 
+														outFolder, idd)
+					print("--- sentence JSON: %.3f seconds ---" % (time.time() - sentence_start_time))
 
 					with open(join(outFolder, "%s.book.html" % (idd)), "w", encoding="utf-8") as out:
 						out.write("<html>")
@@ -603,5 +762,3 @@ class EnglishBookNLP:
 
 				print("--- TOTAL (excl. startup): %.3f seconds ---, %s words" % (time.time() - originalTime, len(tokens)))
 				return time.time() - originalTime
-
-
