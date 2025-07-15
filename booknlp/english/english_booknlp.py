@@ -330,7 +330,7 @@ class EnglishBookNLP:
 
 	def generate_sentence_speaker_json(self, tokens, quotes, attributed_quotations, entities, assignments, genders, chardata, outFolder, idd):
 		"""
-		Generate a JSON file mapping each sentence to its speaker with comprehensive character information
+		Generate a JSON file mapping each sentence to its speaker with basic character information
 		"""
 		
 		# Get canonical names for characters
@@ -389,18 +389,7 @@ class EnglishBookNLP:
 			"character_id": "narrator",
 			"canonical_name": "narrator",
 			"inferred_gender": None,
-			"mention_count": 0,
-			"mentions": {
-				"proper": [],
-				"common": [],
-				"pronoun": []
-			},
-			"roles": {
-				"agent_actions": [],
-				"patient_actions": [],
-				"possessions": [],
-				"modifiers": []
-			}
+			"mention_count": 0
 		}
 		characters_info.append(narrator_char)
 		
@@ -411,18 +400,7 @@ class EnglishBookNLP:
 				"character_id": char_id,
 				"canonical_name": char_names.get(char_id, f"character_{char_id}"),
 				"inferred_gender": character.get("g", None),
-				"mention_count": character["count"],
-				"mentions": {
-					"proper": character["mentions"]["proper"],
-					"common": character["mentions"]["common"], 
-					"pronoun": character["mentions"]["pronoun"]
-				},
-				"roles": {
-					"agent_actions": [{"action": action["w"], "token_position": action["i"]} for action in character["agent"]],
-					"patient_actions": [{"action": action["w"], "token_position": action["i"]} for action in character["patient"]],
-					"possessions": [{"item": poss["w"], "token_position": poss["i"]} for poss in character["poss"]],
-					"modifiers": [{"description": mod["w"], "token_position": mod["i"]} for mod in character["mod"]]
-				}
+				"mention_count": character["count"]
 			}
 			characters_info.append(char_info)
 		
@@ -430,7 +408,7 @@ class EnglishBookNLP:
 		result = {
 			"metadata": {
 				"generated_by": "BookNLP",
-				"generated_at": "2025-07-15 19:51:05",
+				"generated_at": "2025-07-15 20:25:56",
 				"generated_by_user": "DrewThomasson",
 				"document_id": idd,
 				"total_sentences": len(sentences),
@@ -480,6 +458,7 @@ class EnglishBookNLP:
 			json.dump(result, out, indent=2, ensure_ascii=False)
 		
 		return result
+
 
 	def process(self, filename, outFolder, idd):		
 
