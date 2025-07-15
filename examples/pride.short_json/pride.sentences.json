@@ -1,7 +1,7 @@
 {
   "metadata": {
     "generated_by": "BookNLP",
-    "generated_at": "2025-07-15 19:51:05",
+    "generated_at": "2025-07-15 20:25:56",
     "generated_by_user": "DrewThomasson",
     "document_id": "pride",
     "total_sentences": 41,
@@ -12,18 +12,7 @@
       "character_id": "narrator",
       "canonical_name": "narrator",
       "inferred_gender": null,
-      "mention_count": 0,
-      "mentions": {
-        "proper": [],
-        "common": [],
-        "pronoun": []
-      },
-      "roles": {
-        "agent_actions": [],
-        "patient_actions": [],
-        "possessions": [],
-        "modifiers": []
-      }
+      "mention_count": 0
     },
     {
       "character_id": 13,
@@ -40,448 +29,13 @@
         "max": 0.875,
         "total": 8
       },
-      "mention_count": 69,
-      "mentions": {
-        "proper": [
-          {
-            "c": 5,
-            "n": "Mr. Bennet"
-          }
-        ],
-        "common": [
-          {
-            "c": 3,
-            "n": "My dear"
-          },
-          {
-            "c": 3,
-            "n": "my dear"
-          },
-          {
-            "c": 1,
-            "n": "a single man in possession of a good fortune"
-          },
-          {
-            "c": 1,
-            "n": "a wife"
-          },
-          {
-            "c": 1,
-            "n": "such a man"
-          },
-          {
-            "c": 1,
-            "n": "his lady"
-          },
-          {
-            "c": 1,
-            "n": "his wife"
-          }
-        ],
-        "pronoun": [
-          {
-            "c": 21,
-            "n": "you"
-          },
-          {
-            "c": 7,
-            "n": "You"
-          },
-          {
-            "c": 7,
-            "n": "I"
-          },
-          {
-            "c": 4,
-            "n": "his"
-          },
-          {
-            "c": 4,
-            "n": "my"
-          },
-          {
-            "c": 3,
-            "n": "your"
-          },
-          {
-            "c": 2,
-            "n": "he"
-          },
-          {
-            "c": 2,
-            "n": "me"
-          },
-          {
-            "c": 1,
-            "n": "My"
-          },
-          {
-            "c": 1,
-            "n": "him"
-          },
-          {
-            "c": 1,
-            "n": "she"
-          }
-        ]
-      },
-      "roles": {
-        "agent_actions": [
-          {
-            "action": "said",
-            "token_position": 83
-          },
-          {
-            "action": "heard",
-            "token_position": 94
-          },
-          {
-            "action": "replied",
-            "token_position": 106
-          },
-          {
-            "action": "had",
-            "token_position": 109
-          },
-          {
-            "action": "returned",
-            "token_position": 118
-          },
-          {
-            "action": "made",
-            "token_position": 141
-          },
-          {
-            "action": "want",
-            "token_position": 149
-          },
-          {
-            "action": "want",
-            "token_position": 167
-          },
-          {
-            "action": "have",
-            "token_position": 174
-          },
-          {
-            "action": "have",
-            "token_position": 174
-          },
-          {
-            "action": "know",
-            "token_position": 195
-          },
-          {
-            "action": "know",
-            "token_position": 363
-          },
-          {
-            "action": "talk",
-            "token_position": 394
-          },
-          {
-            "action": "visit",
-            "token_position": 419
-          },
-          {
-            "action": "see",
-            "token_position": 430
-          },
-          {
-            "action": "go",
-            "token_position": 441
-          },
-          {
-            "action": "send",
-            "token_position": 446
-          },
-          {
-            "action": "send",
-            "token_position": 446
-          },
-          {
-            "action": "flatter",
-            "token_position": 486
-          },
-          {
-            "action": "go",
-            "token_position": 559
-          },
-          {
-            "action": "see",
-            "token_position": 561
-          },
-          {
-            "action": "engage",
-            "token_position": 578
-          },
-          {
-            "action": "assure",
-            "token_position": 582
-          },
-          {
-            "action": "know",
-            "token_position": 625
-          },
-          {
-            "action": "go",
-            "token_position": 635
-          },
-          {
-            "action": "do",
-            "token_position": 651
-          },
-          {
-            "action": "dare",
-            "token_position": 665
-          },
-          {
-            "action": "send",
-            "token_position": 680
-          },
-          {
-            "action": "send",
-            "token_position": 680
-          },
-          {
-            "action": "throw",
-            "token_position": 706
-          },
-          {
-            "action": "do",
-            "token_position": 722
-          },
-          {
-            "action": "giving",
-            "token_position": 763
-          },
-          {
-            "action": "abuse",
-            "token_position": 816
-          },
-          {
-            "action": "take",
-            "token_position": 826
-          },
-          {
-            "action": "have",
-            "token_position": 833
-          },
-          {
-            "action": "mistake",
-            "token_position": 844
-          },
-          {
-            "action": "mention",
-            "token_position": 869
-          }
-        ],
-        "patient_actions": [
-          {
-            "action": "considered",
-            "token_position": 63
-          },
-          {
-            "action": "told",
-            "token_position": 132
-          },
-          {
-            "action": "cried",
-            "token_position": 158
-          },
-          {
-            "action": "tell",
-            "token_position": 169
-          },
-          {
-            "action": "like",
-            "token_position": 472
-          },
-          {
-            "action": "assure",
-            "token_position": 582
-          },
-          {
-            "action": "see",
-            "token_position": 674
-          }
-        ],
-        "possessions": [
-          {
-            "item": "entering",
-            "token_position": 42
-          },
-          {
-            "item": "Bennet",
-            "token_position": 80
-          },
-          {
-            "item": "Bennet",
-            "token_position": 80
-          },
-          {
-            "item": "lady",
-            "token_position": 85
-          },
-          {
-            "item": "wife",
-            "token_position": 160
-          },
-          {
-            "item": "dear",
-            "token_position": 191
-          },
-          {
-            "item": "dear",
-            "token_position": 302
-          },
-          {
-            "item": "Bennet",
-            "token_position": 346
-          },
-          {
-            "item": "wife",
-            "token_position": 351
-          },
-          {
-            "item": "daughters",
-            "token_position": 590
-          },
-          {
-            "item": "consent",
-            "token_position": 692
-          },
-          {
-            "item": "Lizzy",
-            "token_position": 714
-          },
-          {
-            "item": "children",
-            "token_position": 819
-          },
-          {
-            "item": "nerves",
-            "token_position": 857
-          }
-        ],
-        "modifiers": [
-          {
-            "description": "tiresome",
-            "token_position": 359
-          },
-          {
-            "description": "handsome",
-            "token_position": 463
-          },
-          {
-            "description": "scrupulous",
-            "token_position": 660
-          }
-        ]
-      }
+      "mention_count": 69
     },
     {
       "character_id": 14,
       "canonical_name": "my dear",
       "inferred_gender": null,
-      "mention_count": 14,
-      "mentions": {
-        "proper": [],
-        "common": [
-          {
-            "c": 1,
-            "n": "my dear"
-          },
-          {
-            "c": 1,
-            "n": "his wife"
-          }
-        ],
-        "pronoun": [
-          {
-            "c": 5,
-            "n": "I"
-          },
-          {
-            "c": 3,
-            "n": "my"
-          },
-          {
-            "c": 2,
-            "n": "My"
-          },
-          {
-            "c": 2,
-            "n": "me"
-          }
-        ]
-      },
-      "roles": {
-        "agent_actions": [
-          {
-            "action": "replied",
-            "token_position": 349
-          },
-          {
-            "action": "thinking",
-            "token_position": 367
-          },
-          {
-            "action": "have",
-            "token_position": 492
-          },
-          {
-            "action": "pretend",
-            "token_position": 504
-          },
-          {
-            "action": "pretend",
-            "token_position": 504
-          },
-          {
-            "action": "desire",
-            "token_position": 719
-          }
-        ],
-        "patient_actions": [
-          {
-            "action": "flatter",
-            "token_position": 486
-          },
-          {
-            "action": "vexing",
-            "token_position": 829
-          }
-        ],
-        "possessions": [
-          {
-            "item": "Bennet",
-            "token_position": 346
-          },
-          {
-            "item": "dear",
-            "token_position": 483
-          },
-          {
-            "item": "share",
-            "token_position": 496
-          },
-          {
-            "item": "dear",
-            "token_position": 554
-          },
-          {
-            "item": "nerves",
-            "token_position": 839
-          }
-        ],
-        "modifiers": [
-          {
-            "description": "sure",
-            "token_position": 740
-          }
-        ]
-      }
+      "mention_count": 14
     },
     {
       "character_id": 22,
@@ -498,96 +52,7 @@
         "max": 1.0,
         "total": 11
       },
-      "mention_count": 13,
-      "mentions": {
-        "proper": [],
-        "common": [
-          {
-            "c": 1,
-            "n": "a young man of large fortune"
-          },
-          {
-            "c": 1,
-            "n": "A single man of large fortune"
-          }
-        ],
-        "pronoun": [
-          {
-            "c": 6,
-            "n": "he"
-          },
-          {
-            "c": 4,
-            "n": "his"
-          },
-          {
-            "c": 1,
-            "n": "him"
-          }
-        ]
-      },
-      "roles": {
-        "agent_actions": [
-          {
-            "action": "taken",
-            "token_position": 203
-          },
-          {
-            "action": "came",
-            "token_position": 219
-          },
-          {
-            "action": "agreed",
-            "token_position": 243
-          },
-          {
-            "action": "agreed",
-            "token_position": 243
-          },
-          {
-            "action": "marrying",
-            "token_position": 370
-          },
-          {
-            "action": "fall",
-            "token_position": 407
-          },
-          {
-            "action": "comes",
-            "token_position": 425
-          }
-        ],
-        "patient_actions": [
-          {
-            "action": "visit",
-            "token_position": 419
-          }
-        ],
-        "possessions": [
-          {
-            "item": "servants",
-            "token_position": 262
-          },
-          {
-            "item": "name",
-            "token_position": 281
-          },
-          {
-            "item": "design",
-            "token_position": 380
-          }
-        ],
-        "modifiers": [
-          {
-            "description": "married",
-            "token_position": 291
-          },
-          {
-            "description": "single",
-            "token_position": 293
-          }
-        ]
-      }
+      "mention_count": 13
     },
     {
       "character_id": 7,
@@ -604,76 +69,7 @@
         "max": 0.811,
         "total": 300001.981
       },
-      "mention_count": 9,
-      "mentions": {
-        "proper": [
-          {
-            "c": 3,
-            "n": "Mr. Bingley"
-          },
-          {
-            "c": 1,
-            "n": "Bingley"
-          }
-        ],
-        "common": [],
-        "pronoun": [
-          {
-            "c": 2,
-            "n": "he"
-          },
-          {
-            "c": 2,
-            "n": "him"
-          },
-          {
-            "c": 1,
-            "n": "his"
-          }
-        ]
-      },
-      "roles": {
-        "agent_actions": [
-          {
-            "action": "like",
-            "token_position": 472
-          },
-          {
-            "action": "comes",
-            "token_position": 566
-          },
-          {
-            "action": "chooses",
-            "token_position": 698
-          }
-        ],
-        "patient_actions": [
-          {
-            "action": "see",
-            "token_position": 561
-          },
-          {
-            "action": "visit",
-            "token_position": 647
-          },
-          {
-            "action": "assure",
-            "token_position": 687
-          }
-        ],
-        "possessions": [
-          {
-            "item": "marrying",
-            "token_position": 695
-          }
-        ],
-        "modifiers": [
-          {
-            "description": "glad",
-            "token_position": 672
-          }
-        ]
-      }
+      "mention_count": 9
     },
     {
       "character_id": 29,
@@ -690,79 +86,7 @@
         "max": 1.0,
         "total": 5
       },
-      "mention_count": 9,
-      "mentions": {
-        "proper": [],
-        "common": [
-          {
-            "c": 2,
-            "n": "the girls"
-          },
-          {
-            "c": 1,
-            "n": "your own children"
-          },
-          {
-            "c": 1,
-            "n": "my old friends"
-          }
-        ],
-        "pronoun": [
-          {
-            "c": 2,
-            "n": "They"
-          },
-          {
-            "c": 2,
-            "n": "them"
-          },
-          {
-            "c": 1,
-            "n": "they"
-          }
-        ]
-      },
-      "roles": {
-        "agent_actions": [
-          {
-            "action": "go",
-            "token_position": 441
-          },
-          {
-            "action": "send",
-            "token_position": 446
-          },
-          {
-            "action": "have",
-            "token_position": 773
-          }
-        ],
-        "patient_actions": [
-          {
-            "action": "recommend",
-            "token_position": 779
-          },
-          {
-            "action": "abuse",
-            "token_position": 816
-          }
-        ],
-        "possessions": [],
-        "modifiers": [
-          {
-            "description": "silly",
-            "token_position": 790
-          },
-          {
-            "description": "ignorant",
-            "token_position": 792
-          },
-          {
-            "description": "friends",
-            "token_position": 863
-          }
-        ]
-      }
+      "mention_count": 9
     },
     {
       "character_id": 27,
@@ -779,41 +103,7 @@
         "max": 1.0,
         "total": 5
       },
-      "mention_count": 7,
-      "mentions": {
-        "proper": [],
-        "common": [
-          {
-            "c": 1,
-            "n": "our girls"
-          }
-        ],
-        "pronoun": [
-          {
-            "c": 5,
-            "n": "them"
-          },
-          {
-            "c": 1,
-            "n": "themselves"
-          }
-        ]
-      },
-      "roles": {
-        "agent_actions": [],
-        "patient_actions": [
-          {
-            "action": "affect",
-            "token_position": 338
-          },
-          {
-            "action": "send",
-            "token_position": 446
-          }
-        ],
-        "possessions": [],
-        "modifiers": []
-      }
+      "mention_count": 7
     },
     {
       "character_id": 21,
@@ -830,62 +120,7 @@
         "max": 1.0,
         "total": 1
       },
-      "mention_count": 6,
-      "mentions": {
-        "proper": [],
-        "common": [],
-        "pronoun": [
-          {
-            "c": 2,
-            "n": "my"
-          },
-          {
-            "c": 2,
-            "n": "I"
-          },
-          {
-            "c": 1,
-            "n": "he"
-          },
-          {
-            "c": 1,
-            "n": "me"
-          }
-        ]
-      },
-      "roles": {
-        "agent_actions": [
-          {
-            "action": "replied",
-            "token_position": 783
-          },
-          {
-            "action": "have",
-            "token_position": 851
-          },
-          {
-            "action": "heard",
-            "token_position": 867
-          }
-        ],
-        "patient_actions": [
-          {
-            "action": "mistake",
-            "token_position": 844
-          }
-        ],
-        "possessions": [
-          {
-            "item": "dear",
-            "token_position": 848
-          },
-          {
-            "item": "friends",
-            "token_position": 863
-          }
-        ],
-        "modifiers": []
-      }
+      "mention_count": 6
     },
     {
       "character_id": 10,
@@ -902,56 +137,7 @@
         "max": 0.757,
         "total": 1.644
       },
-      "mention_count": 5,
-      "mentions": {
-        "proper": [
-          {
-            "c": 2,
-            "n": "Lizzy"
-          }
-        ],
-        "common": [],
-        "pronoun": [
-          {
-            "c": 2,
-            "n": "her"
-          },
-          {
-            "c": 1,
-            "n": "she"
-          }
-        ]
-      },
-      "roles": {
-        "agent_actions": [
-          {
-            "action": "has",
-            "token_position": 799
-          }
-        ],
-        "patient_actions": [
-          {
-            "action": "giving",
-            "token_position": 763
-          }
-        ],
-        "possessions": [
-          {
-            "item": "sisters",
-            "token_position": 806
-          }
-        ],
-        "modifiers": [
-          {
-            "description": "better",
-            "token_position": 732
-          },
-          {
-            "description": "handsome",
-            "token_position": 746
-          }
-        ]
-      }
+      "mention_count": 5
     },
     {
       "character_id": 31,
@@ -968,42 +154,7 @@
         "max": 1.0,
         "total": 2
       },
-      "mention_count": 4,
-      "mentions": {
-        "proper": [],
-        "common": [
-          {
-            "c": 2,
-            "n": "a woman"
-          }
-        ],
-        "pronoun": [
-          {
-            "c": 1,
-            "n": "she"
-          },
-          {
-            "c": 1,
-            "n": "her"
-          }
-        ]
-      },
-      "roles": {
-        "agent_actions": [
-          {
-            "action": "has",
-            "token_position": 514
-          }
-        ],
-        "patient_actions": [],
-        "possessions": [
-          {
-            "item": "beauty",
-            "token_position": 530
-          }
-        ],
-        "modifiers": []
-      }
+      "mention_count": 4
     },
     {
       "character_id": 32,
@@ -1020,50 +171,7 @@
         "max": 1.0,
         "total": 2
       },
-      "mention_count": 4,
-      "mentions": {
-        "proper": [],
-        "common": [
-          {
-            "c": 1,
-            "n": "five grown - up daughters"
-          },
-          {
-            "c": 1,
-            "n": "your daughters"
-          }
-        ],
-        "pronoun": [
-          {
-            "c": 1,
-            "n": "them"
-          },
-          {
-            "c": 1,
-            "n": "they"
-          }
-        ]
-      },
-      "roles": {
-        "agent_actions": [
-          {
-            "action": "visit",
-            "token_position": 628
-          }
-        ],
-        "patient_actions": [
-          {
-            "action": "has",
-            "token_position": 514
-          },
-          {
-            "action": "consider",
-            "token_position": 588
-          }
-        ],
-        "possessions": [],
-        "modifiers": []
-      }
+      "mention_count": 4
     },
     {
       "character_id": 4,
@@ -1080,37 +188,7 @@
         "max": 0.831,
         "total": 200001.35
       },
-      "mention_count": 3,
-      "mentions": {
-        "proper": [
-          {
-            "c": 2,
-            "n": "Mrs. Long"
-          }
-        ],
-        "common": [],
-        "pronoun": [
-          {
-            "c": 1,
-            "n": "she"
-          }
-        ]
-      },
-      "roles": {
-        "agent_actions": [
-          {
-            "action": "told",
-            "token_position": 132
-          },
-          {
-            "action": "says",
-            "token_position": 199
-          }
-        ],
-        "patient_actions": [],
-        "possessions": [],
-        "modifiers": []
-      }
+      "mention_count": 3
     },
     {
       "character_id": 16,
@@ -1127,33 +205,7 @@
         "max": 1.0,
         "total": 1
       },
-      "mention_count": 2,
-      "mentions": {
-        "proper": [],
-        "common": [
-          {
-            "c": 1,
-            "n": "the surrounding families"
-          }
-        ],
-        "pronoun": [
-          {
-            "c": 1,
-            "n": "their"
-          }
-        ]
-      },
-      "roles": {
-        "agent_actions": [],
-        "patient_actions": [],
-        "possessions": [
-          {
-            "item": "daughters",
-            "token_position": 74
-          }
-        ],
-        "modifiers": []
-      }
+      "mention_count": 2
     }
   ],
   "sentences": [
