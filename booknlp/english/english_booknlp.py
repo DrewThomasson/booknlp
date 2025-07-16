@@ -460,6 +460,159 @@ class EnglishBookNLP:
 		return result
 
 
+	def generate_character_json(self, entities, assignments, genders, chardata, outFolder, idd):
+	    """
+	    Generate a JSON file with character information including TTS settings
+	    """
+	    
+	    # Get canonical names for characters
+	    names = {}
+	    for idx, (start, end, cat, text) in enumerate(entities):
+	        coref = assignments[idx]
+	        if coref not in names:
+	            names[coref] = Counter()
+	        ner_prop = cat.split("_")[0]
+	        ner_type = cat.split("_")[1]
+	        if ner_prop == "PROP":
+	            names[coref][text.lower()] += 10
+	        elif ner_prop == "NOM":
+	            names[coref][text.lower()] += 1
+	        else:
+	            names[coref][text.lower()] += 0.001
+	    
+	    # Get canonical name for each character ID
+	    char_names = {}
+	    for coref, name_counter in names.items():
+	        if name_counter:
+	            char_names[coref] = name_counter.most_common(1)[0][0]
+	        else:
+	            char_names[coref] = f"character_{coref}"
+	    
+	    # Build character information
+	    characters_info = []
+	    
+	    # Add narrator first
+	    narrator_char = {
+	        "character_id": "narrator",
+	        "canonical_name": "narrator",
+	        "inferred_gender": None,
+	        "mention_count": 0,
+	        "tts_engine": "XTTSv2",
+	        "language": "eng"
+	    }
+	    characters_info.append(narrator_char)
+	    
+	    # Add characters from chardata
+	    for character in chardata["characters"]:
+	        char_id = character["id"]
+	        char_info = {
+	            "character_id": char_id,
+	            "canonical_name": char_names.get(char_id, f"character_{char_id}"),
+	            "inferred_gender": character.get("g", None),
+	            "mention_count": character["count"],
+	            "tts_engine": "XTTSv2",
+	            "language": "eng"
+	        }
+	        characters_info.append(char_info)
+	    
+	    # Build the JSON structure
+	    result = {
+	        "metadata": {
+	            "generated_by": "BookNLP",
+	            "generated_at": datetime.datetime.now().strftime("%Y-%m-%d %H:%M:%S"),
+	            "generated_by_user": "DrewThomasson",
+	            "document_id": idd,
+	            "total_characters": len(characters_info)
+	        },
+	        "characters": characters_info
+	    }
+	    
+	    # Write JSON file
+	    with open(join(outFolder, "%s.characters.json" % (idd)), "w", encoding="utf-8") as out:
+	        json.dump(result, out, indent=2, ensure_ascii=False)
+	    
+	    return result
+
+	def generate_book_with_character_tags(self, tokens, quotes, attributed_quotations, entities, assignments, genders, chardata, outFolder, idd):
+	    """
+	    Generate a .book.txt file with character ID tags surrounding each sentence
+	    """
+	    
+	    # Get canonical names for characters
+	    names = {}
+	    for idx, (start, end, cat, text) in enumerate(entities):
+	        coref = assignments[idx]
+	        if coref not in names:
+	            names[coref] = Counter()
+	        ner_prop = cat.split("_")[0]
+	        ner_type = cat.split("_")[1]
+	        if ner_prop == "PROP":
+	            names[coref][text.lower()] += 10
+	        elif ner_prop == "NOM":
+	            names[coref][text.lower()] += 1
+	        else:
+	            names[coref][text.lower()] += 0.001
+	    
+	    # Get canonical name for each character ID
+	    char_names = {}
+	    for coref, name_counter in names.items():
+	        if name_counter:
+	            char_names[coref] = name_counter.most_common(1)[0][0]
+	        else:
+	            char_names[coref] = f"character_{coref}"
+	    
+	    # Create mapping of token ranges to quotes and speakers
+	    quote_ranges = {}
+	    for idx, (start, end) in enumerate(quotes):
+	        mention_id = attributed_quotations[idx]
+	        if mention_id is not None:
+	            speaker_id = assignments[mention_id]
+	        else:
+	            speaker_id = "narrator"
+	        
+	        for token_idx in range(start, end + 1):
+	            quote_ranges[token_idx] = speaker_id
+	    
+	    # Group tokens by sentence
+	    sentences = {}
+	    for token in tokens:
+	        sent_id = token.sentence_id
+	        if sent_id not in sentences:
+	            sentences[sent_id] = []
+	        sentences[sent_id].append(token)
+	    
+	    # Build the tagged text
+	    result_lines = []
+	    
+	    for sent_id in sorted(sentences.keys()):
+	        sent_tokens = sentences[sent_id]
+	        sent_text = " ".join([token.text for token in sent_tokens])
+	        
+	        # Determine speaker for this sentence
+	        # Check if any tokens in this sentence are part of quotes
+	        speaker_ids_in_sentence = set()
+	        
+	        for token in sent_tokens:
+	            if token.token_id in quote_ranges:
+	                speaker_ids_in_sentence.add(quote_ranges[token.token_id])
+	        
+	        # If exactly one speaker, use that speaker; otherwise default to narrator
+	        if len(speaker_ids_in_sentence) == 1:
+	            speaker_id = list(speaker_ids_in_sentence)[0]
+	        else:
+	            speaker_id = "narrator"
+	        
+	        # Format the sentence with character tags
+	        tagged_sentence = f"[CharacterID:{speaker_id}:Start] {sent_text} [CharacterID:{speaker_id}:End]"
+	        result_lines.append(tagged_sentence)
+	    
+	    # Write the tagged text file
+	    with open(join(outFolder, "%s.book.txt" % (idd)), "w", encoding="utf-8") as out:
+	        out.write("\n".join(result_lines))
+	    
+	    return result_lines
+
+
 	def process(self, filename, outFolder, idd):		
 
 		with torch.no_grad():
@@ -640,6 +793,20 @@ class EnglishBookNLP:
 														entities, assignments, genders, chardata, 
 														outFolder, idd)
 					print("--- sentence JSON: %.3f seconds ---" % (time.time() - sentence_start_time))
+
+					# Generate character info JSON
+					print("--- generating character JSON: start ---")
+					char_start_time = time.time()
+					self.generate_character_json(entities, assignments, genders, chardata, outFolder, idd)
+					print("--- character JSON: %.3f seconds ---" % (time.time() - char_start_time))
+
+					# Generate book with character tags
+					print("--- generating tagged book: start ---")
+					book_start_time = time.time()
+					self.generate_book_with_character_tags(tokens, quotes, attributed_quotations, 
+					                                      entities, assignments, genders, chardata, 
+					                                      outFolder, idd)
+					print("--- tagged book: %.3f seconds ---" % (time.time() - book_start_time))
 
 					with open(join(outFolder, "%s.book.html" % (idd)), "w", encoding="utf-8") as out:
 						out.write("<html>")
