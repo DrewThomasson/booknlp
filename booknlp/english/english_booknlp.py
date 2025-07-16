@@ -459,10 +459,79 @@ class EnglishBookNLP:
 		
 		return result
 
+	def infer_age_category_with_scores(self, character_data):
+	    """
+	    Use semantic similarity to infer age category with confidence scores for all categories
+	    """
+	    try:
+	        from sentence_transformers import SentenceTransformer
+	        if not hasattr(self, '_age_model'):
+	            self._age_model = SentenceTransformer('all-MiniLM-L6-v2')
+	        model = self._age_model
+	    except ImportError:
+	        print("Warning: sentence-transformers not installed. Age inference unavailable.")
+	        return {"category": "unknown", "scores": {"child": 0.0, "teen": 0.0, "adult": 0.0, "elder": 0.0}}
+	    except Exception as e:
+	        print(f"Warning: Could not load sentence transformer model: {e}")
+	        return {"category": "unknown", "scores": {"child": 0.0, "teen": 0.0, "adult": 0.0, "elder": 0.0}}
+	    
+	    age_prototypes = {
+	        'child': [
+	            "young child", "little kid", "small child", "baby", "toddler", 
+	            "young boy", "little girl", "infant", "youngster"
+	        ],
+	        'teen': [
+	            "teenager", "adolescent", "young person", "teenage boy", 
+	            "teenage girl", "youth", "high school student"
+	        ],
+	        'adult': [
+	            "adult man", "adult woman", "grown person", "mature person",
+	            "middle-aged man", "middle-aged woman", "working adult"
+	        ],
+	        'elder': [
+	            "elderly person", "old man", "old woman", "senior citizen",
+	            "aged person", "grandfather", "grandmother", "elderly gentleman"
+	        ]
+	    }
+	    
+	    # Get descriptors
+	    descriptors = []
+	    descriptors.extend([mod['w'] for mod in character_data.get('mod', [])])
+	    descriptors.extend([mention['n'] for mention in character_data.get('mentions', {}).get('common', [])])
+	    
+	    if not descriptors:
+	        return {"category": "unknown", "scores": {"child": 0.0, "teen": 0.0, "adult": 0.0, "elder": 0.0}}
+	    
+	    character_description = " ".join(descriptors)
+	    
+	    # Calculate similarities for ALL categories
+	    category_scores = {}
+	    best_category = "unknown"
+	    best_score = 0.0
+	    
+	    try:
+	        for category, prototypes in age_prototypes.items():
+	            prototype_embeddings = model.encode(prototypes)
+	            char_embedding = model.encode([character_description])
+	            
+	            similarities = model.similarity(char_embedding, prototype_embeddings)
+	            max_similarity = float(similarities.max())
+	            
+	            category_scores[category] = round(max_similarity, 3)
+	            
+	            if max_similarity > best_score and max_similarity > 0.2:
+	                best_score = max_similarity
+	                best_category = category
+	        
+	    except Exception as e:
+	        print(f"Warning: Error during age inference: {e}")
+	        return {"category": "unknown", "scores": {"child": 0.0, "teen": 0.0, "adult": 0.0, "elder": 0.0}}
+	    
+	    return {"category": best_category, "scores": category_scores}
 
 	def generate_character_json(self, entities, assignments, genders, chardata, outFolder, idd):
 	    """
-	    Generate a JSON file with character information including TTS settings
+	    Generate a JSON file with character information including TTS settings and age inference with scores
 	    """
 	    
 	    # Get canonical names for characters
@@ -496,6 +565,8 @@ class EnglishBookNLP:
 	        "character_id": "narrator",
 	        "canonical_name": "narrator",
 	        "inferred_gender": None,
+	        "inferred_age_category": "unknown",
+	        "age_confidence_scores": {"child": 0.0, "teen": 0.0, "adult": 0.0, "elder": 0.0},
 	        "mention_count": 0,
 	        "tts_engine": "XTTSv2",
 	        "language": "eng"
@@ -505,10 +576,14 @@ class EnglishBookNLP:
 	    # Add characters from chardata
 	    for character in chardata["characters"]:
 	        char_id = character["id"]
+	        age_result = self.infer_age_category_with_scores(character)
+	        
 	        char_info = {
 	            "character_id": char_id,
 	            "canonical_name": char_names.get(char_id, f"character_{char_id}"),
 	            "inferred_gender": character.get("g", None),
+	            "inferred_age_category": age_result["category"],
+	            "age_confidence_scores": age_result["scores"],
 	            "mention_count": character["count"],
 	            "tts_engine": "XTTSv2",
 	            "language": "eng"
@@ -519,7 +594,7 @@ class EnglishBookNLP:
 	    result = {
 	        "metadata": {
 	            "generated_by": "BookNLP",
-	            "generated_at": datetime.datetime.now().strftime("%Y-%m-%d %H:%M:%S"),
+	            "generated_at": "2025-07-16 17:24:59",
 	            "generated_by_user": "DrewThomasson",
 	            "document_id": idd,
 	            "total_characters": len(characters_info)
@@ -611,6 +686,7 @@ class EnglishBookNLP:
 	        out.write("\n".join(result_lines))
 	    
 	    return result_lines
+
 
 
 	def process(self, filename, outFolder, idd):		
