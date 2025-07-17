@@ -569,7 +569,8 @@ class EnglishBookNLP:
 	        "age_confidence_scores": {"child": 0.0, "teen": 0.0, "adult": 0.0, "elder": 0.0},
 	        "mention_count": 0,
 	        "tts_engine": "XTTSv2",
-	        "language": "eng"
+	        "language": "eng",
+	        "voice": None
 	    }
 	    characters_info.append(narrator_char)
 	    
@@ -586,7 +587,8 @@ class EnglishBookNLP:
 	            "age_confidence_scores": age_result["scores"],
 	            "mention_count": character["count"],
 	            "tts_engine": "XTTSv2",
-	            "language": "eng"
+	            "language": "eng",
+	            "voice": None
 	        }
 	        characters_info.append(char_info)
 	    
