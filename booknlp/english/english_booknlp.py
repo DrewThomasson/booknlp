@@ -610,7 +610,7 @@ class EnglishBookNLP:
 
 	def generate_book_with_character_tags(self, tokens, quotes, attributed_quotations, entities, assignments, genders, chardata, outFolder, idd):
 	    """
-	    Generate a .book.txt file with character ID tags surrounding each sentence
+	    Generate a .book.txt file with character name tags surrounding each sentence
 	    """
 	    
 	    # Get canonical names for characters
@@ -632,9 +632,14 @@ class EnglishBookNLP:
 	    char_names = {}
 	    for coref, name_counter in names.items():
 	        if name_counter:
-	            char_names[coref] = name_counter.most_common(1)[0][0]
+	            # Capitalize the canonical name for tags
+	            canonical_name = name_counter.most_common(1)[0][0].title()
+	            char_names[coref] = canonical_name
 	        else:
-	            char_names[coref] = f"character_{coref}"
+	            char_names[coref] = f"Character{coref}"
+	    
+	    # Add narrator to char_names mapping
+	    char_names["narrator"] = "Narrator"
 	    
 	    # Create mapping of token ranges to quotes and speakers
 	    quote_ranges = {}
@@ -677,8 +682,11 @@ class EnglishBookNLP:
 	        else:
 	            speaker_id = "narrator"
 	        
-	        # Format the sentence with character tags
-	        tagged_sentence = f"[CharacterID:{speaker_id}:Start] {sent_text} [CharacterID:{speaker_id}:End]"
+	        # Get the canonical name for the speaker
+	        speaker_name = char_names.get(speaker_id, f"Character{speaker_id}")
+	        
+	        # Format the sentence with character name tags
+	        tagged_sentence = f"[{speaker_name}] {sent_text} [/]"
 	        result_lines.append(tagged_sentence)
 	    
 	    # Write the tagged text file
