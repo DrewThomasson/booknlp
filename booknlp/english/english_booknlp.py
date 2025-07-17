@@ -608,6 +608,36 @@ class EnglishBookNLP:
 	    
 	    return result
 
+	def fix_punctuation_spacing(self, text):
+	    """
+	    Fix spacing around punctuation marks to follow standard English conventions
+	    """
+	    import re
+	    
+	    # Remove spaces before common punctuation marks
+	    text = re.sub(r'\s+([,.!?;:])', r'\1', text)
+	    
+	    # Remove spaces before closing quotes, parentheses, brackets
+	    text = re.sub(r'\s+(["\'\)\]\}])', r'\1', text)
+	    
+	    # Add space after punctuation if missing (but not before closing punctuation)
+	    text = re.sub(r'([,.!?;:])([^\s"\'\)\]\}\n])', r'\1 \2', text)
+	    
+	    # Handle opening quotes, parentheses, brackets - remove space after
+	    text = re.sub(r'(["\'\(\[\{])\s+', r'\1', text)
+	    
+	    # Fix contractions (remove space before apostrophe in contractions)
+	    text = re.sub(r'\s+(\'\w+)', r'\1', text)  # Handles 's, 't, 're, etc.
+	    
+	    # Fix double spaces
+	    text = re.sub(r'\s{2,}', ' ', text)
+	    
+	    # Handle special cases for quotes
+	    text = re.sub(r'"\s+', '"', text)  # Remove space after opening quote
+	    text = re.sub(r'\s+"', '"', text)  # Remove space before closing quote
+	    
+	    return text.strip()
+
 	def generate_book_with_character_tags(self, tokens, quotes, attributed_quotations, entities, assignments, genders, chardata, outFolder, idd):
 	    """
 	    Generate a .book.txt file with character name tags surrounding each sentence
@@ -667,6 +697,9 @@ class EnglishBookNLP:
 	    for sent_id in sorted(sentences.keys()):
 	        sent_tokens = sentences[sent_id]
 	        sent_text = " ".join([token.text for token in sent_tokens])
+	        
+	        # Fix punctuation spacing
+	        sent_text = self.fix_punctuation_spacing(sent_text)
 	        
 	        # Determine speaker for this sentence
 	        # Check if any tokens in this sentence are part of quotes
