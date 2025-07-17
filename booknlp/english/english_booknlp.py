@@ -614,27 +614,39 @@ class EnglishBookNLP:
 	    """
 	    import re
 	    
+	    # First pass - fix quotes more aggressively
+	    # Remove ALL spaces immediately after opening quotes
+	    text = re.sub(r'"\s+', '"', text)
+	    text = re.sub(r"'\s+", "'", text)
+	    
+	    # Remove ALL spaces immediately before closing quotes
+	    text = re.sub(r'\s+"', '"', text)
+	    text = re.sub(r"\s+'", "'", text)
+	    
 	    # Remove spaces before common punctuation marks
 	    text = re.sub(r'\s+([,.!?;:])', r'\1', text)
 	    
 	    # Remove spaces before closing quotes, parentheses, brackets
 	    text = re.sub(r'\s+(["\'\)\]\}])', r'\1', text)
 	    
+	    # Fix contractions - remove spaces around apostrophes in contractions
+	    text = re.sub(r'\s+\'\s*(\w+)', r"'\1", text)
+	    text = re.sub(r'(\w+)\s+\'\s*(\w+)', r"\1'\2", text)
+	    
+	    # Handle possessives - remove space before 's
+	    text = re.sub(r'(\w+)\s+\'\s*s\b', r"\1's", text)
+	    
 	    # Add space after punctuation if missing (but not before closing punctuation)
 	    text = re.sub(r'([,.!?;:])([^\s"\'\)\]\}\n])', r'\1 \2', text)
 	    
-	    # Handle opening quotes, parentheses, brackets - remove space after
-	    text = re.sub(r'(["\'\(\[\{])\s+', r'\1', text)
+	    # Handle opening parentheses, brackets - remove space after
+	    text = re.sub(r'([\(\[\{])\s+', r'\1', text)
 	    
-	    # Fix contractions (remove space before apostrophe in contractions)
-	    text = re.sub(r'\s+(\'\w+)', r'\1', text)  # Handles 's, 't, 're, etc.
+	    # Fix underscores (italics) - remove spaces around them but add space after closing underscore
+	    text = re.sub(r'_(\w+)_(\w)', r'_\1_ \2', text)
 	    
 	    # Fix double spaces
 	    text = re.sub(r'\s{2,}', ' ', text)
-	    
-	    # Handle special cases for quotes
-	    text = re.sub(r'"\s+', '"', text)  # Remove space after opening quote
-	    text = re.sub(r'\s+"', '"', text)  # Remove space before closing quote
 	    
 	    return text.strip()
 
