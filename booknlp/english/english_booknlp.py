@@ -433,6 +433,38 @@ class EnglishBookNLP:
 	    Generate a JSON file with character information including TTS settings and age inference with scores
 	    """
 	    
+	    def map_gender_to_standard(gender_data):
+	        """
+	        Map gender inference results to 'male', 'female', or 'unknown' based on highest score
+	        """
+	        if gender_data is None:
+	            return "unknown"
+	            
+	        # Get the inference scores
+	        inference_scores = gender_data.get("inference", {})
+	        
+	        # Map pronoun groups to standard genders
+	        gender_mapping = {
+	            "he/him/his": "male",
+	            "she/her": "female",
+	            # Ignore other categories like "they/them/their", "xe/xem/xyr", etc.
+	        }
+	        
+	        # Find the highest scoring valid gender
+	        max_score = 0.0
+	        best_gender = "unknown"
+	        
+	        for pronoun_group, score in inference_scores.items():
+	            if pronoun_group in gender_mapping and score > max_score:
+	                max_score = score
+	                best_gender = gender_mapping[pronoun_group]
+	        
+	        # Only return a gender if the confidence is reasonable (e.g., > 0.1)
+	        if max_score > 0.1:
+	            return best_gender
+	        else:
+	            return "unknown"
+	    
 	    # Get canonical names for characters
 	    names = {}
 	    for idx, (start, end, cat, text) in enumerate(entities):
@@ -464,7 +496,8 @@ class EnglishBookNLP:
 	        "character_id": "Narrator",
 	        "canonical_name": "Narrator",
 	        "normalized_name": "Narrator",
-	        "inferred_gender": None,
+	        "inferred_gender": "unknown",
+	        "gender_scores": {},
 	        "inferred_age_category": "unknown",
 	        "age_confidence_scores": {"child": 0.0, "teen": 0.0, "adult": 0.0, "elder": 0.0},
 	        "mention_count": 0,
@@ -480,11 +513,21 @@ class EnglishBookNLP:
 	        age_result = self.infer_age_category_with_scores(character)
 	        canonical_name = char_names.get(char_id, f"character_{char_id}")
 	        
+	        # Map the gender to standard format
+	        raw_gender_data = character.get("g", None)
+	        standardized_gender = map_gender_to_standard(raw_gender_data)
+	        
+	        # Preserve the original gender scores
+	        gender_scores = {}
+	        if raw_gender_data and "inference" in raw_gender_data:
+	            gender_scores = raw_gender_data["inference"]
+	        
 	        char_info = {
 	            "character_id": char_id,
 	            "canonical_name": canonical_name,
 	            "normalized_name": self.normalize_character_name(canonical_name),
-	            "inferred_gender": character.get("g", None),
+	            "inferred_gender": standardized_gender,
+	            "gender_scores": gender_scores,
 	            "inferred_age_category": age_result["category"],
 	            "age_confidence_scores": age_result["scores"],
 	            "mention_count": character["count"],
@@ -498,7 +541,7 @@ class EnglishBookNLP:
 	    result = {
 	        "metadata": {
 	            "generated_by": "BookNLP",
-	            "generated_at": "2025-07-16 17:24:59",
+	            "generated_at": "2025-07-18 05:43:37",
 	            "generated_by_user": "DrewThomasson",
 	            "document_id": idd,
 	            "total_characters": len(characters_info)
@@ -512,6 +555,7 @@ class EnglishBookNLP:
 	    
 	    return result
 
+	    
 	def fix_punctuation_spacing(self, text):
 	    """
 	    Fix spacing around punctuation marks to follow standard English conventions
