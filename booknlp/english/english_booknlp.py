@@ -555,6 +555,112 @@ class EnglishBookNLP:
 	    
 	    return result
 
+
+	def generate_simplified_character_json(self, entities, assignments, genders, chardata, outFolder, idd):
+	    """
+	    Generate a simplified JSON file with only essential character information for TTS
+	    """
+	    
+	    def map_gender_to_standard(gender_data):
+	        """
+	        Map gender inference results to 'male', 'female', or 'unknown' based on highest score
+	        """
+	        if gender_data is None:
+	            return "unknown"
+	            
+	        # Get the inference scores
+	        inference_scores = gender_data.get("inference", {})
+	        
+	        # Map pronoun groups to standard genders
+	        gender_mapping = {
+	            "he/him/his": "male",
+	            "she/her": "female",
+	            # Ignore other categories like "they/them/their", "xe/xem/xyr", etc.
+	        }
+	        
+	        # Find the highest scoring valid gender
+	        max_score = 0.0
+	        best_gender = "unknown"
+	        
+	        for pronoun_group, score in inference_scores.items():
+	            if pronoun_group in gender_mapping and score > max_score:
+	                max_score = score
+	                best_gender = gender_mapping[pronoun_group]
+	        
+	        # Only return a gender if the confidence is reasonable (e.g., > 0.1)
+	        if max_score > 0.1:
+	            return best_gender
+	        else:
+	            return "unknown"
+	    
+	    # Get canonical names for characters
+	    names = {}
+	    for idx, (start, end, cat, text) in enumerate(entities):
+	        coref = assignments[idx]
+	        if coref not in names:
+	            names[coref] = Counter()
+	        ner_prop = cat.split("_")[0]
+	        ner_type = cat.split("_")[1]
+	        if ner_prop == "PROP":
+	            names[coref][text.lower()] += 10
+	        elif ner_prop == "NOM":
+	            names[coref][text.lower()] += 1
+	        else:
+	            names[coref][text.lower()] += 0.001
+	    
+	    # Get canonical name for each character ID
+	    char_names = {}
+	    for coref, name_counter in names.items():
+	        if name_counter:
+	            char_names[coref] = name_counter.most_common(1)[0][0]
+	        else:
+	            char_names[coref] = f"character_{coref}"
+	    
+	    # Build simplified character information
+	    characters_info = []
+	    
+	    # Add narrator first
+	    narrator_char = {
+	        "normalized_name": "Narrator",
+	        "inferred_gender": "unknown",
+	        "inferred_age_category": "unknown",
+	        "tts_engine": "XTTSv2",
+	        "language": "eng",
+	        "voice": None
+	    }
+	    characters_info.append(narrator_char)
+	    
+	    # Add characters from chardata
+	    for character in chardata["characters"]:
+	        char_id = character["id"]
+	        age_result = self.infer_age_category_with_scores(character)
+	        canonical_name = char_names.get(char_id, f"character_{char_id}")
+	        
+	        # Map the gender to standard format
+	        raw_gender_data = character.get("g", None)
+	        standardized_gender = map_gender_to_standard(raw_gender_data)
+	        
+	        char_info = {
+	            "normalized_name": self.normalize_character_name(canonical_name),
+	            "inferred_gender": standardized_gender,
+	            "inferred_age_category": age_result["category"],
+	            "tts_engine": "XTTSv2",
+	            "language": "eng",
+	            "voice": None
+	        }
+	        characters_info.append(char_info)
+	    
+	    # Build the simplified JSON structure
+	    result = {
+	        "characters": characters_info
+	    }
+	    
+	    # Write simplified JSON file
+	    with open(join(outFolder, "%s.characters_simple.json" % (idd)), "w", encoding="utf-8") as out:
+	        json.dump(result, out, indent=2, ensure_ascii=False)
+	    
+	    return result
+
 	    
 	def fix_punctuation_spacing(self, text):
 	    """
@@ -871,6 +977,12 @@ class EnglishBookNLP:
 					char_start_time = time.time()
 					self.generate_character_json(entities, assignments, genders, chardata, outFolder, idd)
 					print("--- character JSON: %.3f seconds ---" % (time.time() - char_start_time))
+
+					# Generate simplified character info JSON
+					print("--- generating simplified character JSON: start ---")
+					simple_char_start_time = time.time()
+					self.generate_simplified_character_json(entities, assignments, genders, chardata, outFolder, idd)
+					print("--- simplified character JSON: %.3f seconds ---" % (time.time() - simple_char_start_time))
 
 					# Generate book with character tags
 					print("--- generating tagged book: start ---")
