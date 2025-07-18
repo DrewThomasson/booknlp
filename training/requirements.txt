@@ -1,5 +1,5 @@
 # Additional requirements for speaker attribution training
-tkinter  # For GUI (usually included with Python)
+# tkinter  # For GUI (usually included with Python)
 scikit-learn>=1.3.0
 matplotlib>=3.4.0
 tensorboard>=2.13.0

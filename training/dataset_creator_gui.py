@@ -14,8 +14,8 @@ from pathlib import Path
 import sys
 sys.path.append(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
 
-from .config import DatasetConfig
-from .data_utils import SpeakerAttributionDataProcessor
+from config import DatasetConfig
+from data_utils import SpeakerAttributionDataProcessor
 
 logger = logging.getLogger(__name__)
 
