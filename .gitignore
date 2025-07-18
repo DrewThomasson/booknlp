@@ -51,4 +51,10 @@ output/
 # Temporary files
 *.tmp
 *.temp
-*.bak 
+*.bak
+
+# Training system outputs
+models/
+logs/
+checkpoints/
+example_data/ 
