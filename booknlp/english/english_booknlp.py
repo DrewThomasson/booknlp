@@ -476,8 +476,8 @@ class EnglishBookNLP:
 	    if not words:
 	        return "UnknownCharacter"
 	    
-	    # First word lowercase, rest capitalized (camelCase)
-	    normalized = words[0].lower()
+	    # First word capitalized, rest capitalized (camelCase)
+	    normalized = words[0].capitalize()
 	    for word in words[1:]:
 	        normalized += word.capitalize()
 	    
