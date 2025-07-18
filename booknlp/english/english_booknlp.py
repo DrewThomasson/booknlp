@@ -458,6 +458,34 @@ class EnglishBookNLP:
 			json.dump(result, out, indent=2, ensure_ascii=False)
 		
 		return result
+	def normalize_character_name(self, name):
+	    """
+	    Normalize character name to camelCase format without spaces or special characters
+	    """
+	    import re
+	    
+	    # Remove special characters except spaces and apostrophes
+	    name = re.sub(r"[^\w\s']", "", name)
+	    
+	    # Handle possessives (e.g., "Tom's" -> "Toms")
+	    name = re.sub(r"'s\b", "s", name)
+	    name = re.sub(r"'", "", name)
+	    
+	    # Split on whitespace and capitalize each word
+	    words = name.split()
+	    if not words:
+	        return "UnknownCharacter"
+	    
+	    # First word lowercase, rest capitalized (camelCase)
+	    normalized = words[0].lower()
+	    for word in words[1:]:
+	        normalized += word.capitalize()
+	    
+	    # Ensure it starts with a letter
+	    if not normalized or not normalized[0].isalpha():
+	        normalized = "character" + normalized.capitalize()
+	    
+	    return normalized
 
 	def infer_age_category_with_scores(self, character_data):
 	    """
@@ -564,6 +592,7 @@ class EnglishBookNLP:
 	    narrator_char = {
 	        "character_id": "narrator",
 	        "canonical_name": "narrator",
+	        "normalized_name": "narrator",
 	        "inferred_gender": None,
 	        "inferred_age_category": "unknown",
 	        "age_confidence_scores": {"child": 0.0, "teen": 0.0, "adult": 0.0, "elder": 0.0},
@@ -578,10 +607,12 @@ class EnglishBookNLP:
 	    for character in chardata["characters"]:
 	        char_id = character["id"]
 	        age_result = self.infer_age_category_with_scores(character)
+	        canonical_name = char_names.get(char_id, f"character_{char_id}")
 	        
 	        char_info = {
 	            "character_id": char_id,
-	            "canonical_name": char_names.get(char_id, f"character_{char_id}"),
+	            "canonical_name": canonical_name,
+	            "normalized_name": self.normalize_character_name(canonical_name),
 	            "inferred_gender": character.get("g", None),
 	            "inferred_age_category": age_result["category"],
 	            "age_confidence_scores": age_result["scores"],
@@ -672,18 +703,21 @@ class EnglishBookNLP:
 	        else:
 	            names[coref][text.lower()] += 0.001
 	    
-	    # Get canonical name for each character ID
+	    # Get canonical name for each character ID and create normalized versions
 	    char_names = {}
+	    normalized_char_names = {}
 	    for coref, name_counter in names.items():
 	        if name_counter:
-	            # Capitalize the canonical name for tags
 	            canonical_name = name_counter.most_common(1)[0][0].title()
 	            char_names[coref] = canonical_name
+	            normalized_char_names[coref] = self.normalize_character_name(canonical_name)
 	        else:
 	            char_names[coref] = f"Character{coref}"
+	            normalized_char_names[coref] = f"character{coref}"
 	    
-	    # Add narrator to char_names mapping
+	    # Add narrator to mappings
 	    char_names["narrator"] = "Narrator"
+	    normalized_char_names["narrator"] = "narrator"
 	    
 	    # Create mapping of token ranges to quotes and speakers
 	    quote_ranges = {}
@@ -729,10 +763,10 @@ class EnglishBookNLP:
 	        else:
 	            speaker_id = "narrator"
 	        
-	        # Get the canonical name for the speaker
-	        speaker_name = char_names.get(speaker_id, f"Character{speaker_id}")
+	        # Get the normalized name for the speaker (used in tags)
+	        speaker_name = normalized_char_names.get(speaker_id, f"character{speaker_id}")
 	        
-	        # Format the sentence with character name tags
+	        # Format the sentence with character name tags using normalized names
 	        tagged_sentence = f"[{speaker_name}] {sent_text} [/]"
 	        result_lines.append(tagged_sentence)
 	    
