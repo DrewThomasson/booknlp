@@ -45,6 +45,14 @@ source venv/bin/activate  # On Windows, use: venv\Scripts\activate
 ./run_booknlp.py input_file.txt --output-dir output/directory
 ```
 
+## To run Booknlp viewer
+
+```bash
+pip install streamlit pandas
+streamlit run booknlp_viewer.py
+```
+
+
 ### Command Line Arguments
 
 - `input_file`: The text file to process (required)
@@ -91,6 +99,17 @@ The pipeline generates several output files in the specified output directory:
    - Entity annotations
    - Character relationships
    - Interactive features
+
+8. `{book_id}.characters_simple.json`: A character sheet for all characters for Multi-speaker in Ebook2Audiobook
+   - inferred_age_category = {"child", "teen", "adult", "elder"}
+   - inferred_gender = {"male", "female", "unknown"}
+   - voice = null # default
+   - language = "eng" # default
+   - normalized_name = {CamelCase} of canonical_name
+
+9. `{book_id}.book.txt`: A multi-speaker book script to use with `{book_id}.characters_simple.json`
+   - [CharacterName] "Quote" [/]
+
 
 ## Example
 
