@@ -16,7 +16,7 @@ from collections import Counter
 PINK = '\033[95m'
 ENDC = '\033[0m'
 
-device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
+device = torch.device("cuda" if torch.cuda.is_available() else "mps" if torch.backends.mps.is_available() else "cpu")
 
 
 class BERTSpeakerID(nn.Module):
@@ -26,8 +26,8 @@ class BERTSpeakerID(nn.Module):
 
 		modelName=base_model
 		modelName=re.sub("^speaker_", "", modelName)
-		modelName=re.sub("-v\d.*$", "", modelName)
-		matcher=re.search(".*-(\d+)_H-(\d+)_A-.*", modelName)
+		modelName=re.sub(r"-v\d.*$", "", modelName)
+		matcher=re.search(r".*-(\d+)_H-(\d+)_A-.*", modelName)
 		bert_dim=0
 		modelSize=0
 		self.num_layers=0
@@ -43,10 +43,16 @@ class BERTSpeakerID(nn.Module):
 		self.tokenizer.add_tokens(["[QUOTE]", "[ALTQUOTE]", "[PAR]", "[CAP]"], special_tokens=True)
 		self.bert = BertModel.from_pretrained(modelName)
 		self.bert.resize_token_embeddings(len(self.tokenizer))
+		self.bert.to(device)
 			
 		self.tanh = nn.Tanh()
 		self.fc = nn.Linear(2*bert_dim, 100)
 		self.fc2 = nn.Linear(100, 1)
+		
+		# Move all components to device
+		self.tanh.to(device)
+		self.fc.to(device)
+		self.fc2.to(device)
 
 	def get_wp_position_for_all_tokens(self, words, doLowerCase=True):
 
@@ -237,8 +243,3 @@ class BERTSpeakerID(nn.Module):
 		print("Epoch %s, accuracy: %.3f" % (epoch, cor/tot))
 
 		return F, cor/tot
-
-
-
-
-
