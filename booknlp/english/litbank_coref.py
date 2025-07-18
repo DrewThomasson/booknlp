@@ -1,4 +1,5 @@
 import torch, sys, re
+import os
 
 from booknlp.english.bert_coref_quote_pronouns import BERTCorefTagger
 import numpy as np
@@ -12,8 +13,8 @@ class LitBankCoref:
 
 		device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
 
-		base_model=re.sub("google_bert", "google/bert", modelFile.split("/")[-1])
-		base_model=re.sub(".model", "", base_model)
+		base_model=re.sub("google_bert", "google/bert", os.path.basename(modelFile))
+		base_model=re.sub("\.model$", "", base_model)
 
 		self.model = BERTCorefTagger(gender_cats=gender_cats, freeze_bert=True, base_model=base_model, pronominalCorefOnly=pronominalCorefOnly)
 		state_dict = torch.load(modelFile, map_location=device)

@@ -1,0 +1,29 @@
+quote_start	quote_end	mention_start	mention_end	mention_phrase	char_id	quote
+76	82	84	85	his lady	13	“ My dear Mr. Bennet , ”
+91	103	84	85	his lady	13	“ have you heard that Netherfield Park is let at last ? ”
+112	117	119	119	she	13	“ But it is , ”
+121	138	119	119	she	13	“ for Mrs. Long has just been here , and she told me all about it . ”
+145	157	159	160	his wife	13	“ Do you not want to know who has taken it ? ”
+163	181	139	140	Mr. Bennet	13	“ _ You _ want to tell me , and I have no objection to hearing it . ”
+187	276	139	140	Mr. Bennet	13	“ Why , my dear , you must know , Mrs. Long says that Netherfield is taken by a young man of large fortune from the north of England ; that he came down on Monday in a chaise and four to see the place , and was so much delighted with it , that he agreed with Mr. Morris immediately ; that he is to take possession before Michaelmas , and some of his servants are to be in the house by the end of next week . ”
+277	283	139	140	Mr. Bennet	13	“ What is his name ? ”
+284	287	139	140	Mr. Bennet	13	“ Bingley . ”
+288	295	139	140	Mr. Bennet	13	“ Is he married or single ? ”
+296	330	139	140	Mr. Bennet	13	“ Oh ! Single , my dear , to be sure ! A single man of large fortune ; four or five thousand a year . What a fine thing for our girls ! ”
+331	341	139	140	Mr. Bennet	13	“ How so ? How can it affect them ? ”
+342	348	350	351	his wife	14	“ My dear Mr. Bennet , ”
+353	375	350	351	his wife	14	“ how can you be so tiresome ! You must know that I am thinking of his marrying one of them . ”
+376	385	139	140	Mr. Bennet	13	“ Is that his design in settling here ? ”
+386	427	350	351	his wife	14	“ Design ! Nonsense , how can you talk so ! But it is very likely that he _ may _ fall in love with one of them , and therefore you must visit him as soon as he comes . ”
+428	480	139	140	Mr. Bennet	13	“ I see no occasion for that . You and the girls may go , or you may send them by themselves , which perhaps will be still better , for as you are as handsome as any of them , Mr. Bingley may like you the best of the party . ”
+481	532	350	351	his wife	14	“ My dear , you flatter me . I certainly _ have _ had my share of beauty , but I do not pretend to be anything extraordinary now . When a woman has five grown - up daughters , she ought to give over thinking of her own beauty . ”
+533	549	139	140	Mr. Bennet	13	“ In such cases , a woman has not often much beauty to think of . ”
+550	571	350	351	his wife	14	“ But , my dear , you must indeed go and see Mr. Bingley when he comes into the neighbourhood . ”
+572	585	139	140	Mr. Bennet	13	“ It is more than I engage for , I assure you . ”
+586	654	350	351	his wife	14	“ But consider your daughters . Only think what an establishment it would be for one of them . Sir William and Lady Lucas are determined to go , merely on that account , for in general , you know , they visit no newcomers . Indeed you must go , for it will be impossible for _ us _ to visit him if you do not . ”
+655	716	139	140	Mr. Bennet	13	“ You are over - scrupulous , surely . I dare say Mr. Bingley will be very glad to see you ; and I will send a few lines by you to assure him of my hearty consent to his marrying whichever he chooses of the girls ; though I must throw in a good word for my little Lizzy . ”
+717	770	350	351	his wife	14	“ I desire you will do no such thing . Lizzy is not a bit better than the others ; and I am sure she is not half so handsome as Jane , nor half so good - humoured as Lydia . But you are always giving _ her _ the preference . ”
+771	782	784	784	he	21	“ They have none of them much to recommend them , ”
+786	808	784	784	he	21	“ they are all silly and ignorant like other girls ; but Lizzy has something more of quickness than her sisters . ”
+809	841	350	351	his wife	14	“ Mr. Bennet , how can you abuse your own children in such a way ? You take delight in vexing me . You have no compassion for my poor nerves . ”
+842	880	784	784	he	21	“ You mistake me , my dear . I have a high respect for your nerves . They are my old friends . I have heard you mention them with consideration these last twenty years at least . ”

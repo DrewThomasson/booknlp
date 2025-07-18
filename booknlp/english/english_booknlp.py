@@ -18,6 +18,7 @@ from pathlib import Path
 import urllib.request 
 import pkg_resources
 import torch
+import datetime
 
 class EnglishBookNLP:
 
@@ -326,7 +327,476 @@ class EnglishBookNLP:
 				data["characters"].append(chardata)
 			
 		return data
-			
+
+
+	def normalize_character_name(self, name):
+	    """
+	    Normalize character name to camelCase format without spaces or special characters
+	    """
+	    import re
+	    
+	    # Remove special characters except spaces and apostrophes
+	    name = re.sub(r"[^\w\s']", "", name)
+	    
+	    # Handle possessives (e.g., "Tom's" -> "Toms")
+	    name = re.sub(r"'s\b", "s", name)
+	    name = re.sub(r"'", "", name)
+	    
+	    # Split on whitespace and capitalize each word
+	    words = name.split()
+	    if not words:
+	        return "UnknownCharacter"
+	    
+	    # First word capitalized, rest capitalized (camelCase)
+	    normalized = words[0].capitalize()
+	    for word in words[1:]:
+	        normalized += word.capitalize()
+	    
+	    # Ensure it starts with a letter
+	    if not normalized or not normalized[0].isalpha():
+	        normalized = "character" + normalized.capitalize()
+	    
+	    return normalized
+
+	def infer_age_category_with_scores(self, character_data):
+	    """
+	    Use semantic similarity to infer age category with confidence scores for all categories
+	    """
+	    try:
+	        from sentence_transformers import SentenceTransformer
+	        if not hasattr(self, '_age_model'):
+	            self._age_model = SentenceTransformer('all-MiniLM-L6-v2')
+	        model = self._age_model
+	    except ImportError:
+	        print("Warning: sentence-transformers not installed. Age inference unavailable.")
+	        return {"category": "unknown", "scores": {"child": 0.0, "teen": 0.0, "adult": 0.0, "elder": 0.0}}
+	    except Exception as e:
+	        print(f"Warning: Could not load sentence transformer model: {e}")
+	        return {"category": "unknown", "scores": {"child": 0.0, "teen": 0.0, "adult": 0.0, "elder": 0.0}}
+	    
+	    age_prototypes = {
+	        'child': [
+	            "young child", "little kid", "small child", "baby", "toddler", 
+	            "young boy", "little girl", "infant", "youngster"
+	        ],
+	        'teen': [
+	            "teenager", "adolescent", "young person", "teenage boy", 
+	            "teenage girl", "youth", "high school student"
+	        ],
+	        'adult': [
+	            "adult man", "adult woman", "grown person", "mature person",
+	            "middle-aged man", "middle-aged woman", "working adult"
+	        ],
+	        'elder': [
+	            "elderly person", "old man", "old woman", "senior citizen",
+	            "aged person", "grandfather", "grandmother", "elderly gentleman"
+	        ]
+	    }
+	    
+	    # Get descriptors
+	    descriptors = []
+	    descriptors.extend([mod['w'] for mod in character_data.get('mod', [])])
+	    descriptors.extend([mention['n'] for mention in character_data.get('mentions', {}).get('common', [])])
+	    
+	    if not descriptors:
+	        return {"category": "unknown", "scores": {"child": 0.0, "teen": 0.0, "adult": 0.0, "elder": 0.0}}
+	    
+	    character_description = " ".join(descriptors)
+	    
+	    # Calculate similarities for ALL categories
+	    category_scores = {}
+	    best_category = "unknown"
+	    best_score = 0.0
+	    
+	    try:
+	        for category, prototypes in age_prototypes.items():
+	            prototype_embeddings = model.encode(prototypes)
+	            char_embedding = model.encode([character_description])
+	            
+	            similarities = model.similarity(char_embedding, prototype_embeddings)
+	            max_similarity = float(similarities.max())
+	            
+	            category_scores[category] = round(max_similarity, 3)
+	            
+	            if max_similarity > best_score and max_similarity > 0.2:
+	                best_score = max_similarity
+	                best_category = category
+	        
+	    except Exception as e:
+	        print(f"Warning: Error during age inference: {e}")
+	        return {"category": "unknown", "scores": {"child": 0.0, "teen": 0.0, "adult": 0.0, "elder": 0.0}}
+	    
+	    return {"category": best_category, "scores": category_scores}
+
+	def generate_character_json(self, entities, assignments, genders, chardata, outFolder, idd):
+	    """
+	    Generate a JSON file with character information including TTS settings and age inference with scores
+	    """
+	    
+	    def map_gender_to_standard(gender_data):
+	        """
+	        Map gender inference results to 'male', 'female', or 'unknown' based on highest score
+	        """
+	        if gender_data is None:
+	            return "unknown"
+	            
+	        # Get the inference scores
+	        inference_scores = gender_data.get("inference", {})
+	        
+	        # Map pronoun groups to standard genders
+	        gender_mapping = {
+	            "he/him/his": "male",
+	            "she/her": "female",
+	            # Ignore other categories like "they/them/their", "xe/xem/xyr", etc.
+	        }
+	        
+	        # Find the highest scoring valid gender
+	        max_score = 0.0
+	        best_gender = "unknown"
+	        
+	        for pronoun_group, score in inference_scores.items():
+	            if pronoun_group in gender_mapping and score > max_score:
+	                max_score = score
+	                best_gender = gender_mapping[pronoun_group]
+	        
+	        # Only return a gender if the confidence is reasonable (e.g., > 0.1)
+	        if max_score > 0.1:
+	            return best_gender
+	        else:
+	            return "unknown"
+	    
+	    # Get canonical names for characters
+	    names = {}
+	    for idx, (start, end, cat, text) in enumerate(entities):
+	        coref = assignments[idx]
+	        if coref not in names:
+	            names[coref] = Counter()
+	        ner_prop = cat.split("_")[0]
+	        ner_type = cat.split("_")[1]
+	        if ner_prop == "PROP":
+	            names[coref][text.lower()] += 10
+	        elif ner_prop == "NOM":
+	            names[coref][text.lower()] += 1
+	        else:
+	            names[coref][text.lower()] += 0.001
+	    
+	    # Get canonical name for each character ID
+	    char_names = {}
+	    for coref, name_counter in names.items():
+	        if name_counter:
+	            char_names[coref] = name_counter.most_common(1)[0][0]
+	        else:
+	            char_names[coref] = f"character_{coref}"
+	    
+	    # Build character information
+	    characters_info = []
+	    
+	    # Add narrator first
+	    narrator_char = {
+	        "character_id": "Narrator",
+	        "canonical_name": "Narrator",
+	        "normalized_name": "Narrator",
+	        "inferred_gender": "unknown",
+	        "gender_scores": {},
+	        "inferred_age_category": "unknown",
+	        "age_confidence_scores": {"child": 0.0, "teen": 0.0, "adult": 0.0, "elder": 0.0},
+	        "mention_count": 0,
+	        "tts_engine": "XTTSv2",
+	        "language": "eng",
+	        "voice": None
+	    }
+	    characters_info.append(narrator_char)
+	    
+	    # Add characters from chardata
+	    for character in chardata["characters"]:
+	        char_id = character["id"]
+	        age_result = self.infer_age_category_with_scores(character)
+	        canonical_name = char_names.get(char_id, f"character_{char_id}")
+	        
+	        # Map the gender to standard format
+	        raw_gender_data = character.get("g", None)
+	        standardized_gender = map_gender_to_standard(raw_gender_data)
+	        
+	        # Preserve the original gender scores
+	        gender_scores = {}
+	        if raw_gender_data and "inference" in raw_gender_data:
+	            gender_scores = raw_gender_data["inference"]
+	        
+	        char_info = {
+	            "character_id": char_id,
+	            "canonical_name": canonical_name,
+	            "normalized_name": self.normalize_character_name(canonical_name),
+	            "inferred_gender": standardized_gender,
+	            "gender_scores": gender_scores,
+	            "inferred_age_category": age_result["category"],
+	            "age_confidence_scores": age_result["scores"],
+	            "mention_count": character["count"],
+	            "tts_engine": "XTTSv2",
+	            "language": "eng",
+	            "voice": None
+	        }
+	        characters_info.append(char_info)
+	    
+	    # Build the JSON structure
+	    result = {
+	        "metadata": {
+	            "generated_by": "BookNLP",
+	            "generated_at": "2025-07-18 05:43:37",
+	            "generated_by_user": "DrewThomasson",
+	            "document_id": idd,
+	            "total_characters": len(characters_info)
+	        },
+	        "characters": characters_info
+	    }
+	    
+	    # Write JSON file
+	    with open(join(outFolder, "%s.characters.json" % (idd)), "w", encoding="utf-8") as out:
+	        json.dump(result, out, indent=2, ensure_ascii=False)
+	    
+	    return result
+
+
+	def generate_simplified_character_json(self, entities, assignments, genders, chardata, outFolder, idd):
+	    """
+	    Generate a simplified JSON file with only essential character information for TTS
+	    """
+	    
+	    def map_gender_to_standard(gender_data):
+	        """
+	        Map gender inference results to 'male', 'female', or 'unknown' based on highest score
+	        """
+	        if gender_data is None:
+	            return "unknown"
+	            
+	        # Get the inference scores
+	        inference_scores = gender_data.get("inference", {})
+	        
+	        # Map pronoun groups to standard genders
+	        gender_mapping = {
+	            "he/him/his": "male",
+	            "she/her": "female",
+	            # Ignore other categories like "they/them/their", "xe/xem/xyr", etc.
+	        }
+	        
+	        # Find the highest scoring valid gender
+	        max_score = 0.0
+	        best_gender = "unknown"
+	        
+	        for pronoun_group, score in inference_scores.items():
+	            if pronoun_group in gender_mapping and score > max_score:
+	                max_score = score
+	                best_gender = gender_mapping[pronoun_group]
+	        
+	        # Only return a gender if the confidence is reasonable (e.g., > 0.1)
+	        if max_score > 0.1:
+	            return best_gender
+	        else:
+	            return "unknown"
+	    
+	    # Get canonical names for characters
+	    names = {}
+	    for idx, (start, end, cat, text) in enumerate(entities):
+	        coref = assignments[idx]
+	        if coref not in names:
+	            names[coref] = Counter()
+	        ner_prop = cat.split("_")[0]
+	        ner_type = cat.split("_")[1]
+	        if ner_prop == "PROP":
+	            names[coref][text.lower()] += 10
+	        elif ner_prop == "NOM":
+	            names[coref][text.lower()] += 1
+	        else:
+	            names[coref][text.lower()] += 0.001
+	    
+	    # Get canonical name for each character ID
+	    char_names = {}
+	    for coref, name_counter in names.items():
+	        if name_counter:
+	            char_names[coref] = name_counter.most_common(1)[0][0]
+	        else:
+	            char_names[coref] = f"character_{coref}"
+	    
+	    # Build simplified character information
+	    characters_info = []
+	    
+	    # Add narrator first
+	    narrator_char = {
+	        "normalized_name": "Narrator",
+	        "inferred_gender": "unknown",
+	        "inferred_age_category": "unknown",
+	        "tts_engine": "XTTSv2",
+	        "language": "eng",
+	        "voice": None
+	    }
+	    characters_info.append(narrator_char)
+	    
+	    # Add characters from chardata
+	    for character in chardata["characters"]:
+	        char_id = character["id"]
+	        age_result = self.infer_age_category_with_scores(character)
+	        canonical_name = char_names.get(char_id, f"character_{char_id}")
+	        
+	        # Map the gender to standard format
+	        raw_gender_data = character.get("g", None)
+	        standardized_gender = map_gender_to_standard(raw_gender_data)
+	        
+	        char_info = {
+	            "normalized_name": self.normalize_character_name(canonical_name),
+	            "inferred_gender": standardized_gender,
+	            "inferred_age_category": age_result["category"],
+	            "tts_engine": "XTTSv2",
+	            "language": "eng",
+	            "voice": None
+	        }
+	        characters_info.append(char_info)
+	    
+	    # Build the simplified JSON structure
+	    result = {
+	        "characters": characters_info
+	    }
+	    
+	    # Write simplified JSON file
+	    with open(join(outFolder, "%s.characters_simple.json" % (idd)), "w", encoding="utf-8") as out:
+	        json.dump(result, out, indent=2, ensure_ascii=False)
+	    
+	    return result
+
+	    
+	def fix_punctuation_spacing(self, text):
+	    """
+	    Fix spacing around punctuation marks to follow standard English conventions
+	    """
+	    import re
+	    
+	    # First pass - fix quotes more aggressively
+	    # Remove ALL spaces immediately after opening quotes
+	    text = re.sub(r'"\s+', '"', text)
+	    text = re.sub(r"'\s+", "'", text)
+	    
+	    # Remove ALL spaces immediately before closing quotes
+	    text = re.sub(r'\s+"', '"', text)
+	    text = re.sub(r"\s+'", "'", text)
+	    
+	    # Remove spaces before common punctuation marks
+	    text = re.sub(r'\s+([,.!?;:])', r'\1', text)
+	    
+	    # Remove spaces before closing quotes, parentheses, brackets
+	    text = re.sub(r'\s+(["\'\)\]\}])', r'\1', text)
+	    
+	    # Fix contractions - remove spaces around apostrophes in contractions
+	    text = re.sub(r'\s+\'\s*(\w+)', r"'\1", text)
+	    text = re.sub(r'(\w+)\s+\'\s*(\w+)', r"\1'\2", text)
+	    
+	    # Handle possessives - remove space before 's
+	    text = re.sub(r'(\w+)\s+\'\s*s\b', r"\1's", text)
+	    
+	    # Add space after punctuation if missing (but not before closing punctuation)
+	    text = re.sub(r'([,.!?;:])([^\s"\'\)\]\}\n])', r'\1 \2', text)
+	    
+	    # Handle opening parentheses, brackets - remove space after
+	    text = re.sub(r'([\(\[\{])\s+', r'\1', text)
+	    
+	    # Fix underscores (italics) - remove spaces around them but add space after closing underscore
+	    text = re.sub(r'_(\w+)_(\w)', r'_\1_ \2', text)
+	    
+	    # Fix double spaces
+	    text = re.sub(r'\s{2,}', ' ', text)
+	    
+	    return text.strip()
+
+	def generate_book_with_character_tags(self, tokens, quotes, attributed_quotations, entities, assignments, genders, chardata, outFolder, idd):
+	    """
+	    Generate a .book.txt file with character name tags surrounding each sentence
+	    """
+	    
+	    # Get canonical names for characters
+	    names = {}
+	    for idx, (start, end, cat, text) in enumerate(entities):
+	        coref = assignments[idx]
+	        if coref not in names:
+	            names[coref] = Counter()
+	        ner_prop = cat.split("_")[0]
+	        ner_type = cat.split("_")[1]
+	        if ner_prop == "PROP":
+	            names[coref][text.lower()] += 10
+	        elif ner_prop == "NOM":
+	            names[coref][text.lower()] += 1
+	        else:
+	            names[coref][text.lower()] += 0.001
+	    
+	    # Get canonical name for each character ID and create normalized versions
+	    char_names = {}
+	    normalized_char_names = {}
+	    for coref, name_counter in names.items():
+	        if name_counter:
+	            canonical_name = name_counter.most_common(1)[0][0].title()
+	            char_names[coref] = canonical_name
+	            normalized_char_names[coref] = self.normalize_character_name(canonical_name)
+	        else:
+	            char_names[coref] = f"Character{coref}"
+	            normalized_char_names[coref] = f"character{coref}"
+	    
+	    # Add narrator to mappings
+	    char_names["Narrator"] = "Narrator"
+	    normalized_char_names["Narrator"] = "Narrator"
+	    
+	    # Create mapping of token ranges to quotes and speakers
+	    quote_ranges = {}
+	    for idx, (start, end) in enumerate(quotes):
+	        mention_id = attributed_quotations[idx]
+	        if mention_id is not None:
+	            speaker_id = assignments[mention_id]
+	        else:
+	            speaker_id = "Narrator"
+	        
+	        for token_idx in range(start, end + 1):
+	            quote_ranges[token_idx] = speaker_id
+	    
+	    # Group tokens by sentence
+	    sentences = {}
+	    for token in tokens:
+	        sent_id = token.sentence_id
+	        if sent_id not in sentences:
+	            sentences[sent_id] = []
+	        sentences[sent_id].append(token)
+	    
+	    # Build the tagged text
+	    result_lines = []
+	    
+	    for sent_id in sorted(sentences.keys()):
+	        sent_tokens = sentences[sent_id]
+	        sent_text = " ".join([token.text for token in sent_tokens])
+	        
+	        # Fix punctuation spacing
+	        sent_text = self.fix_punctuation_spacing(sent_text)
+	        
+	        # Determine speaker for this sentence
+	        # Check if any tokens in this sentence are part of quotes
+	        speaker_ids_in_sentence = set()
+	        
+	        for token in sent_tokens:
+	            if token.token_id in quote_ranges:
+	                speaker_ids_in_sentence.add(quote_ranges[token.token_id])
+	        
+	        # If exactly one speaker, use that speaker; otherwise default to narrator
+	        if len(speaker_ids_in_sentence) == 1:
+	            speaker_id = list(speaker_ids_in_sentence)[0]
+	        else:
+	            speaker_id = "Narrator"
+	        
+	        # Get the normalized name for the speaker (used in tags)
+	        speaker_name = normalized_char_names.get(speaker_id, f"character{speaker_id}")
+	        
+	        # Format the sentence with character name tags using normalized names
+	        tagged_sentence = f"[{speaker_name}] {sent_text} [/]"
+	        result_lines.append(tagged_sentence)
+	    
+	    # Write the tagged text file
+	    with open(join(outFolder, "%s.book.txt" % (idd)), "w", encoding="utf-8") as out:
+	        out.write("\n".join(result_lines))
+	    
+	    return result_lines
+
 
 
 	def process(self, filename, outFolder, idd):		
@@ -336,7 +806,7 @@ class EnglishBookNLP:
 			start_time = time.time()
 			originalTime=start_time
 
-			with open(filename) as file:
+			with open(filename, encoding='utf-8') as file:
 				data=file.read()
 
 				if len(data) == 0:
@@ -502,6 +972,25 @@ class EnglishBookNLP:
 						else:
 							names[coref][text.lower()]+=.001
 
+					# Generate character info JSON
+					print("--- generating character JSON: start ---")
+					char_start_time = time.time()
+					self.generate_character_json(entities, assignments, genders, chardata, outFolder, idd)
+					print("--- character JSON: %.3f seconds ---" % (time.time() - char_start_time))
+
+					# Generate simplified character info JSON
+					print("--- generating simplified character JSON: start ---")
+					simple_char_start_time = time.time()
+					self.generate_simplified_character_json(entities, assignments, genders, chardata, outFolder, idd)
+					print("--- simplified character JSON: %.3f seconds ---" % (time.time() - simple_char_start_time))
+
+					# Generate book with character tags
+					print("--- generating tagged book: start ---")
+					book_start_time = time.time()
+					self.generate_book_with_character_tags(tokens, quotes, attributed_quotations, 
+					                                      entities, assignments, genders, chardata, 
+					                                      outFolder, idd)
+					print("--- tagged book: %.3f seconds ---" % (time.time() - book_start_time))
 
 					with open(join(outFolder, "%s.book.html" % (idd)), "w", encoding="utf-8") as out:
 						out.write("<html>")
@@ -603,5 +1092,3 @@ class EnglishBookNLP:
 
 				print("--- TOTAL (excl. startup): %.3f seconds ---, %s words" % (time.time() - originalTime, len(tokens)))
 				return time.time() - originalTime
-
-
